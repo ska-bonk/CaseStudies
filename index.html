@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Wealth Advisory — Famiglia Rossi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#1C0D00; --dk:#2A1200; --dk2:#3D1C00;
+  --gold:#C8924A; --gold-lt:#E0B472;
+  --cream:#FDF6EE; --peach:#F2DEC8;
+  --text:#2A1200; --text-md:#6B3E1A; --text-lt:#9E6B3A;
+  --c-obbl:#1A237E; --c-imm:#1565C0; --c-az:#8D1A1A;
+  --c-liq:#2E7D32; --c-mon:#E65100; --c-pe:#6A1B9A;
+  --c-fp:#F57F17; --c-cert:#1565C0; --c-polI:#2E7D32; --c-polIII:#00695C;
+  --c-gp:#5E1282; --c-df:#1A237E; --c-dt:#C8924A;
+  --rad:14px;
+}
+
+html,body{
+  background:var(--bg);
+  font-family:'DM Sans',sans-serif;
+  color:var(--text);
+  min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* ── HEADER BAR ─────────────────────────────── */
+#top-bar{
+  position:sticky;top:0;z-index:100;
+  background:var(--dk);
+  border-bottom:1px solid rgba(200,146,74,.2);
+  padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tb-logo{
+  font-family:'Playfair Display',serif;
+  font-size:13px;font-weight:700;
+  color:var(--gold);letter-spacing:2px;
+  text-transform:uppercase;
+}
+.tb-meta{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+
+/* ── SECTION TABS ───────────────────────────── */
+#tabs{
+  position:sticky;top:52px;z-index:90;
+  background:var(--dk2);
+  display:flex;overflow-x:auto;
+  scrollbar-width:none;border-bottom:1px solid rgba(200,146,74,.12);
+  padding:0 12px;gap:0;
+}
+#tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex-shrink:0;padding:11px 16px;
+  font-size:11px;font-weight:500;
+  color:rgba(255,255,255,.38);letter-spacing:1px;
+  cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .2s;white-space:nowrap;
+}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* ── SCROLL CONTAINER ───────────────────────── */
+#scroller{
+  display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+#scroller::-webkit-scrollbar{display:none;}
+
+/* ── SLIDE PAGES ────────────────────────────── */
+.page{
+  flex-shrink:0;
+  width:100vw;min-height:calc(100vh - 52px - 42px);
+  scroll-snap-align:start;
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+  background:var(--cream);
+  padding:20px 18px 32px;
+  gap:14px;
+}
+.page.dark{background:var(--dk);}
+
+/* ── PAGE HEADER ────────────────────────────── */
+.ph{
+  padding:0 0 12px;
+  border-bottom:1px solid rgba(200,146,74,.15);
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:8px;
+}
+.ph-title{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:700;color:var(--text);
+  line-height:1.2;
+}
+.ph-section{font-size:10px;color:var(--text-lt);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;}
+.ph-badge{
+  width:32px;height:32px;border:1.5px solid var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--gold);flex-shrink:0;
+}
+
+/* ── CARDS ──────────────────────────────────── */
+.card{
+  background:#fff;border-radius:var(--rad);
+  border:1px solid rgba(200,146,74,.15);
+  padding:18px 18px;
+}
+.card.dk{background:var(--dk2);border-color:rgba(200,146,74,.15);}
+.ct{
+  font-size:9px;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;color:var(--text-lt);margin-bottom:12px;
+}
+.ct.light{color:rgba(255,255,255,.38);}
+
+/* ── KPI ROW ────────────────────────────────── */
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.kpi-row.three{grid-template-columns:1fr 1fr 1fr;}
+.kpi-cell{
+  background:#fff;border-radius:10px;
+  border:1px solid rgba(200,146,74,.12);
+  padding:14px 12px;text-align:center;
+  display:flex;flex-direction:column;gap:4px;align-items:center;
+}
+.kpi-cell.dk{background:var(--dk2);border-color:rgba(200,146,74,.12);}
+.kv{font-family:'Playfair Display',serif;font-weight:700;color:var(--text);line-height:1;}
+.kv.xl{font-size:38px;} .kv.lg{font-size:28px;} .kv.md{font-size:22px;}
+.kv.gold{color:var(--gold);} .kv.green{color:#2E7D32;} .kv.red{color:#B71C1C;}
+.kv.blue{color:var(--c-obbl);} .kv.white{color:#fff;}
+.kl{font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-lt);}
+.kl.light{color:rgba(255,255,255,.4);}
+
+/* ── TABLE ──────────────────────────────────── */
+.t{width:100%;border-collapse:collapse;font-size:12.5px;}
+.t th{background:var(--dk);color:var(--gold);font-size:9.5px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;padding:8px 10px;text-align:left;}
+.t td{padding:8px 10px;color:var(--text);border-bottom:1px solid rgba(42,18,0,.07);}
+.t tr:last-child td{font-weight:700;background:rgba(200,146,74,.06);}
+.t td.r{text-align:right;font-variant-numeric:tabular-nums;}
+.t td.red{color:#B71C1C;font-weight:600;}
+
+/* ── CHART WRAPPER ──────────────────────────── */
+.ch-wrap{width:100%;position:relative;}
+
+/* ── COVER ──────────────────────────────────── */
+.cover-page{
+  background:var(--dk);
+  min-height:calc(100vh - 52px - 42px);
+  display:flex;flex-direction:column;
+  justify-content:space-between;
+  padding:40px 24px 36px;
+  position:relative;overflow:hidden;
+}
+.cover-page::before{
+  content:'';position:absolute;
+  width:120vw;height:120vw;border-radius:50%;
+  border:1px solid rgba(200,146,74,.06);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.cover-page::after{
+  content:'';position:absolute;
+  width:80vw;height:80vw;border-radius:50%;
+  border:1px solid rgba(200,146,74,.09);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.cvr-top{position:relative;z-index:2;}
+.cvr-eye{font-size:9px;color:var(--gold);letter-spacing:5px;text-transform:uppercase;opacity:.7;margin-bottom:20px;}
+.cvr-ttl{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:#fff;line-height:.95;letter-spacing:-1px;margin-bottom:12px;}
+.cvr-ttl em{font-style:italic;color:var(--gold-lt);}
+.cvr-rule{width:48px;height:2px;background:var(--gold);margin-bottom:22px;}
+.cvr-box{display:inline-flex;flex-direction:column;padding:14px 24px;border:1px solid rgba(200,146,74,.32);border-radius:2px;gap:3px;}
+.cvr-name{font-family:'Playfair Display',serif;font-size:20px;color:#fff;letter-spacing:3px;}
+.cvr-sub{font-size:9px;color:rgba(255,255,255,.32);letter-spacing:2.5px;text-transform:uppercase;}
+.cvr-stats{display:flex;flex-direction:column;gap:14px;position:relative;z-index:2;}
+.cvr-stat{border-top:1px solid rgba(200,146,74,.18);padding-top:12px;}
+.cvr-sv{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold-lt);margin-bottom:2px;}
+.cvr-sl{font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:2px;}
+.cvr-conf{font-size:8px;color:rgba(255,255,255,.15);letter-spacing:2px;text-transform:uppercase;margin-top:8px;}
+
+/* ── DIVIDER PAGE ────────────────────────────── */
+.div-page{
+  background:var(--dk);
+  min-height:360px;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:40px 24px;gap:14px;
+}
+.div-num{font-family:'Playfair Display',serif;font-size:80px;font-weight:700;color:rgba(200,146,74,.15);line-height:1;}
+.div-fg{position:relative;margin-top:-60px;}
+.div-num-fg{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:var(--gold);}
+.div-rule{width:44px;height:2px;background:var(--gold);margin:12px 0;}
+.div-ttl{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:10px;}
+.div-desc{font-size:13px;color:rgba(255,255,255,.42);line-height:1.7;}
+.div-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.div-pill{padding:6px 14px;border-radius:16px;font-size:10px;border:1px solid rgba(200,146,74,.22);color:var(--gold);background:rgba(200,146,74,.05);}
+
+/* ── ORG PERSON ─────────────────────────────── */
+.person-card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(200,146,74,.18);
+  border-radius:10px;overflow:hidden;
+}
+.person-head{
+  background:var(--dk2);padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.person-head.light{background:rgba(255,255,255,.04);}
+.person-name{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold-lt);}
+.person-age{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:1px;}
+.person-role{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;}
+.person-body{padding:10px 14px;font-size:12px;color:rgba(255,255,255,.5);line-height:1.55;}
+
+/* ── PRODUCT CARD ────────────────────────────── */
+.prod-item{
+  background:#fff;border-radius:8px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 14px;border-left:3px solid var(--c-df);
+}
+.prod-type{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-lt);}
+.prod-val{font-size:14px;font-weight:700;color:var(--text);}
+.prod-badge{font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;color:#fff;}
+
+/* ── BAR ROW ────────────────────────────────── */
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.bar-lbl{font-size:11.5px;color:var(--text-md);min-width:110px;flex-shrink:0;}
+.bar-track{flex:1;height:16px;background:rgba(0,0,0,.07);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;}
+.bar-val{font-size:12px;font-weight:600;color:var(--text);min-width:50px;text-align:right;flex-shrink:0;}
+.bar-pct{font-size:11px;color:var(--text-lt);min-width:36px;text-align:right;flex-shrink:0;}
+
+/* ── ROADMAP ────────────────────────────────── */
+.rm-step-m{
+  display:flex;gap:16px;align-items:flex-start;
+  padding:16px 0;border-bottom:1px solid rgba(200,146,74,.1);
+}
+.rm-step-m:last-child{border-bottom:none;}
+.rm-num-m{
+  width:48px;height:48px;border:1.5px solid var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-family:'Playfair Display',serif;font-size:20px;color:var(--gold);
+  background:rgba(200,146,74,.05);
+}
+.rm-content-m{}
+.rm-title-m{font-family:'Playfair Display',serif;font-size:16px;color:#fff;margin-bottom:6px;}
+.rm-list-m{list-style:none;}
+.rm-list-m li{font-size:11.5px;color:rgba(255,255,255,.42);line-height:1.8;}
+.rm-list-m li::before{content:'·';color:var(--gold);margin-right:6px;}
+
+/* ── OBJ ROW ────────────────────────────────── */
+.obj-row{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border-radius:8px;background:rgba(200,146,74,.05);border:1px solid rgba(200,146,74,.1);margin-bottom:8px;}
+.obj-icon{font-size:20px;flex-shrink:0;}
+.obj-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+.obj-desc{font-size:11px;color:rgba(255,255,255,.4);line-height:1.5;}
+
+/* ── BOTTOM NAV ─────────────────────────────── */
+#bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:var(--dk);border-top:1px solid rgba(200,146,74,.15);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;gap:12px;
+}
+.bn-btn{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;-webkit-tap-highlight-color:transparent;
+}
+.bn-btn:active{background:var(--gold);border-color:var(--gold);color:#fff;}
+.bn-btn:disabled{opacity:.22;}
+.bn-center{text-align:center;flex:1;}
+.bn-count{font-size:13px;color:rgba(255,255,255,.6);}
+.bn-sec{font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.bn-prog{
+  width:100%;height:2px;background:rgba(255,255,255,.08);
+  border-radius:2px;overflow:hidden;margin-top:6px;
+}
+.bn-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .3s ease;}
+</style>
+</head>
+<body>
+
+<!-- ── TOP BAR ─────────────────────────────── -->
+<div id="top-bar">
+  <div>
+    <div class="tb-logo">Wealth Advisory</div>
+    <div class="tb-meta">Famiglia Rossi · Marzo 2025</div>
+  </div>
+  <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);">R</div>
+</div>
+
+<!-- ── SECTION TABS ─────────────────────────── -->
+<div id="tabs">
+  <div class="tab active" onclick="tabTo(0)">Apertura</div>
+  <div class="tab" onclick="tabTo(2)">01 Analisi</div>
+  <div class="tab" onclick="tabTo(11)">02 Ristrutturazione</div>
+  <div class="tab" onclick="tabTo(14)">03 Piano</div>
+  <div class="tab" onclick="tabTo(20)">04 Rendicontazione</div>
+</div>
+
+<!-- ── SLIDE SCROLLER ────────────────────────── -->
+<div id="scroller">
+
+  <!-- PAGE 0: COVER ──────────────────────────── -->
+  <div class="page dark" id="m0" data-section="Apertura">
+    <div class="cover-page" style="padding:0;min-height:0;flex:1;">
+      <div class="cvr-top" style="padding:40px 24px 0;">
+        <div class="cvr-eye">Private Wealth Advisory</div>
+        <div class="cvr-ttl">WEALTH<br><em>ADVISORY</em></div>
+        <div class="cvr-rule"></div>
+        <div class="cvr-box">
+          <div class="cvr-name">FAMIGLIA ROSSI</div>
+          <div class="cvr-sub">Rossi Holding S.r.l. · Milano</div>
+        </div>
+      </div>
+      <div class="cvr-stats" style="padding:0 24px 32px;">
+        <div class="cvr-stat"><div class="cvr-sv">€ 11.750.000</div><div class="cvr-sl">Patrimonio Totale</div></div>
+        <div class="cvr-stat"><div class="cvr-sv">4 Fasi</div><div class="cvr-sl">Piano di Intervento</div></div>
+        <div class="cvr-stat"><div class="cvr-sv">2025–2028</div><div class="cvr-sl">Orizzonte Pluriennale</div></div>
+        <div class="cvr-conf">Riservato e Confidenziale</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 1: ROADMAP ────────────────────────── -->
+  <div class="page dark" id="m1" data-section="Apertura">
+    <div class="ph" style="border-bottom-color:rgba(200,146,74,.2);">
+      <div><div class="ph-title" style="color:#fff;">Il Customer Journey</div><div class="ph-section" style="color:rgba(200,146,74,.6);">Un percorso in quattro fasi</div></div>
+    </div>
+    <div class="rm-step-m">
+      <div class="rm-num-m">01</div>
+      <div class="rm-content-m"><div class="rm-title-m">Analisi Patrimoniale</div><ul class="rm-list-m"><li>Mappatura patrimonio complessivo</li><li>Struttura finanziaria attuale</li><li>Portfolio immobiliare e flussi</li><li>Analisi costi e criticità</li></ul></div>
+    </div>
+    <div class="rm-step-m">
+      <div class="rm-num-m">02</div>
+      <div class="rm-content-m"><div class="rm-title-m">Ristrutturazione</div><ul class="rm-list-m"><li>Consolidamento intermediari</li><li>Nuova asset allocation</li><li>Ottimizzazione costi</li><li>Governance e fiscalità</li></ul></div>
+    </div>
+    <div class="rm-step-m">
+      <div class="rm-num-m">03</div>
+      <div class="rm-content-m"><div class="rm-title-m">Piano di Investimento</div><ul class="rm-list-m"><li>Assunzioni per asset class</li><li>Piani annuali 2025–2028</li><li>Benchmark e confronto scenari</li><li>Target allocation</li></ul></div>
+    </div>
+    <div class="rm-step-m">
+      <div class="rm-num-m">04</div>
+      <div class="rm-content-m"><div class="rm-title-m">Monitoraggio &amp; Rendicontazione</div><ul class="rm-list-m"><li>Comitato Investimenti periodico</li><li>Rendicontazione portafoglio</li><li>Focus per asset class</li><li>Flussi e prossimi passi</li></ul></div>
+    </div>
+    <div class="div-pills">
+      <div class="div-pill">Orizzonte 24–36 mesi</div>
+      <div class="div-pill">€ 11.750.000</div>
+      <div class="div-pill">Rossi Holding S.r.l.</div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: DIVIDER 01 ────────────────────── -->
+  <div class="page dark" id="m2" data-section="01 — Analisi Patrimoniale">
+    <div class="div-page" style="padding:0;min-height:0;flex:1;">
+      <div class="div-num" style="padding:32px 24px 0;">01</div>
+      <div class="div-fg" style="padding:0 24px 32px;">
+        <div class="div-num-fg">01</div>
+        <div class="div-rule"></div>
+        <div class="div-ttl">Analisi<br>Patrimoniale</div>
+        <div class="div-desc">Fotografia completa del patrimonio della Famiglia Rossi: struttura finanziaria, portfolio immobiliare, flussi e criticità.</div>
+        <div class="div-pills" style="margin-top:24px;">
+          <div class="div-pill">€ 11.750.000 Totale</div>
+          <div class="div-pill">7 immobili</div>
+          <div class="div-pill">4 banche</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: PROFILO FAMIGLIA ──────────────── -->
+  <div class="page dark" id="m3" data-section="01 — Analisi Patrimoniale">
+    <div class="ph" style="border-bottom-color:rgba(200,146,74,.2);">
+      <div><div class="ph-title" style="color:#fff;">Profilo Famiglia</div><div class="ph-section" style="color:rgba(200,146,74,.6);">Sezione 01</div></div>
+      <div class="ph-badge">R</div>
+    </div>
+    <div class="person-card">
+      <div class="person-head"><div><div class="person-name">Luisa Rossi</div><div class="person-role">Nonna Paterna · 82 anni · Vedova</div></div><div style="font-size:9px;color:rgba(200,146,74,.5);letter-spacing:1px;">GEN I</div></div>
+    </div>
+    <div style="width:2px;height:16px;background:rgba(200,146,74,.25);margin:0 auto;"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="person-card">
+        <div class="person-head"><div><div class="person-name">Roberto Rossi</div><div class="person-role">Capofamiglia · 58 anni</div></div><div style="font-size:9px;color:rgba(200,146,74,.5);letter-spacing:1px;">GEN II</div></div>
+        <div class="person-body">Imprenditore, socio maggioritario di Rossi Holding. Esperienza finanziaria media-alta.</div>
+      </div>
+      <div class="person-card" style="border-style:dashed;">
+        <div class="person-head"><div><div class="person-name">Anna Ferraro</div><div class="person-role">Coniuge · 54 anni</div></div></div>
+        <div class="person-body">Professionista. Soc. minoritaria. Priorità pianificazione successoria.</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+      <div class="person-card">
+        <div class="person-head"><div><div class="person-name" style="font-size:13px;">Marco Rossi</div><div class="person-role">Figlio · 32 anni</div></div><div style="font-size:9px;color:rgba(200,146,74,.4);">GEN III</div></div>
+        <div class="person-body" style="font-size:11px;">Manager, erede designato.</div>
+      </div>
+      <div class="person-card" style="border-style:dashed;border-color:rgba(79,195,247,.35);">
+        <div class="person-head" style="background:rgba(79,195,247,.06);"><div><div class="person-name" style="font-size:13px;color:#90CAF9;">Sofia Bianchi</div><div class="person-role" style="color:rgba(144,202,249,.5);">Coniuge Marco · 29a</div></div></div>
+        <div class="person-body" style="font-size:11px;color:rgba(144,202,249,.45);">Avvocato.</div>
+      </div>
+      <div class="person-card">
+        <div class="person-head"><div><div class="person-name" style="font-size:13px;">Giulia Rossi</div><div class="person-role">Figlia · 28 anni</div></div></div>
+        <div class="person-body" style="font-size:11px;">Prof. emergente.</div>
+      </div>
+    </div>
+    <div class="person-card" style="border-color:rgba(79,195,247,.35);background:rgba(26,35,126,.15);">
+      <div class="person-head" style="background:rgba(26,35,126,.4);"><div><div class="person-name" style="color:#90CAF9;">Luca Rossi</div><div class="person-role" style="color:rgba(144,202,249,.5);">Nipote · 3 anni · Figlio di Marco e Sofia</div></div><div style="font-size:9px;color:rgba(79,195,247,.5);">GEN IV</div></div>
+    </div>
+
+    <!-- Objectives section -->
+    <div class="ct" style="margin-top:8px;">Obiettivi Patrimoniali</div>
+    <div class="obj-row"><div class="obj-icon">🏛️</div><div><div class="obj-title">Preservazione del Capitale</div><div class="obj-desc">Protezione del patrimonio nel lungo periodo.</div></div></div>
+    <div class="obj-row" style="background:rgba(21,101,192,.08);border-color:rgba(21,101,192,.15);"><div class="obj-icon">💰</div><div><div class="obj-title">Reddito Ricorrente</div><div class="obj-desc">Flussi cedolari e da locazioni per spese correnti.</div></div></div>
+    <div class="obj-row" style="background:rgba(46,107,58,.08);border-color:rgba(46,107,58,.15);"><div class="obj-icon">📈</div><div><div class="obj-title">Crescita del Capitale</div><div class="obj-desc">Valorizzazione progressiva orizzonte 7–10 anni.</div></div></div>
+    <div class="obj-row" style="background:rgba(94,18,130,.08);border-color:rgba(94,18,130,.15);"><div class="obj-icon">🔄</div><div><div class="obj-title">Passaggio Generazionale</div><div class="obj-desc">Struttura ottimale per Marco e Giulia.</div></div></div>
+
+    <!-- Risk profile -->
+    <div class="kpi-row three" style="margin-top:4px;">
+      <div class="kpi-cell dk" style="grid-column:span 1;">
+        <div class="kv md gold">MODERATO</div>
+        <div style="display:flex;gap:3px;margin:5px 0;">
+          <div style="width:18px;height:6px;border-radius:2px;background:#2E7D32;"></div>
+          <div style="width:18px;height:6px;border-radius:2px;background:#2E7D32;"></div>
+          <div style="width:18px;height:6px;border-radius:2px;background:#2E7D32;"></div>
+          <div style="width:18px;height:6px;border-radius:2px;background:rgba(255,255,255,.12);"></div>
+          <div style="width:18px;height:6px;border-radius:2px;background:rgba(255,255,255,.12);"></div>
+        </div>
+        <div class="kl light">Rischio</div>
+      </div>
+      <div class="kpi-cell dk">
+        <div class="kv md red">−15%</div>
+        <div class="kl light">Max Perdita</div>
+      </div>
+      <div class="kpi-cell dk">
+        <div class="kv md" style="color:#90CAF9;">7–10a</div>
+        <div class="kl light">Orizzonte</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4: PATRIMONIO ─────────────────────── -->
+  <div class="page" id="m4" data-section="01 — Analisi Patrimoniale">
+    <div class="ph">
+      <div><div class="ph-title">Patrimonio Complessivo</div><div class="ph-section">Sezione 01</div></div>
+      <div class="ph-badge">R</div>
+    </div>
+    <div style="text-align:center;padding:8px 0 4px;">
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-lt);margin-bottom:6px;">Patrimonio Netto Totale</div>
+      <div class="kv xl" style="font-size:48px;letter-spacing:-1px;">€ 11.750.000</div>
+      <div style="width:48px;height:2px;background:var(--gold);margin:10px auto;"></div>
+    </div>
+    <!-- Chart -->
+    <div class="card" style="align-items:center;gap:0;">
+      <div class="ct">Ripartizione</div>
+      <div class="ch-wrap" style="height:260px;">
+        <canvas id="mch-patr" style="width:100%;height:100%;"></canvas>
+      </div>
+    </div>
+    <!-- Two big cards -->
+    <div style="background:#fff;border-radius:14px;border:1.5px solid rgba(200,146,74,.2);padding:22px 20px;display:flex;align-items:center;gap:18px;">
+      <div style="width:52px;height:52px;background:var(--dk);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">💶</div>
+      <div><div class="kl" style="margin-bottom:6px;">Patrimonio Mobiliare</div><div class="kv lg">€ 5.050.000</div><div style="font-size:13px;color:var(--gold);font-weight:600;margin-top:5px;">43,0%</div></div>
+    </div>
+    <div style="background:#fff;border-radius:14px;border:1.5px solid rgba(21,101,192,.2);padding:22px 20px;display:flex;align-items:center;gap:18px;">
+      <div style="width:52px;height:52px;background:var(--c-imm);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🏠</div>
+      <div><div class="kl" style="margin-bottom:6px;">Patrimonio Immobiliare</div><div class="kv lg">€ 6.700.000</div><div style="font-size:13px;color:var(--c-imm);font-weight:600;margin-top:5px;">57,0%</div></div>
+    </div>
+  </div>
+
+  <!-- PAGE 5: STRUTTURA FINANZIARIA ─────────── -->
+  <div class="page" id="m5" data-section="01 — Analisi Patrimoniale">
+    <div class="ph">
+      <div><div class="ph-title">Struttura Finanziaria</div><div class="ph-section">Attuale — Prima dell'Intervento</div></div>
+      <div class="ph-badge">R</div>
+    </div>
+    <!-- Holding -->
+    <div style="background:var(--dk);border-radius:10px;border:1.5px solid var(--gold);padding:14px 18px;text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--gold-lt);">Rossi Holding S.r.l.</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;">Totale € 5.050.000 · Costi 2,80%</div>
+    </div>
+    <!-- Bank 1 -->
+    <div class="card" style="background:var(--dk);border-top:3px solid #C8924A;padding:14px 16px;gap:9px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <div style="font-size:15px;font-weight:700;color:#E0B472;">W.H. Aurum</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.5);">€ 1.850.000</div>
+      </div>
+      <div class="prod-item"><div><div class="prod-type">Dossier Fondi</div><div class="prod-val">€ 680.000</div></div><div class="prod-badge" style="background:var(--c-df);">DF</div></div>
+      <div class="prod-item" style="border-left-color:var(--c-polI);"><div><div class="prod-type">Polizza Ramo I</div><div class="prod-val">€ 480.000</div></div><div class="prod-badge" style="background:var(--c-polI);">RI</div></div>
+      <div class="prod-item" style="border-left-color:var(--c-polIII);"><div><div class="prod-type">Polizza Ramo III</div><div class="prod-val">€ 380.000</div></div><div class="prod-badge" style="background:var(--c-polIII);">RIII</div></div>
+      <div class="prod-item" style="border-left-color:var(--c-fp);"><div><div class="prod-type">Fondo Pensione</div><div class="prod-val">€ 80.000</div></div><div class="prod-badge" style="background:var(--c-fp);">FP</div></div>
+      <div class="prod-item" style="border-left-color:var(--c-cert);"><div><div class="prod-type">Certificati</div><div class="prod-val">€ 120.000</div></div><div class="prod-badge" style="background:var(--c-cert);">CT</div></div>
+      <div class="prod-item" style="border-left-color:#78909C;"><div><div class="prod-type">Conto Corrente</div><div class="prod-val">€ 110.000</div></div><div class="prod-badge" style="background:#78909C;">CC</div></div>
+    </div>
+    <!-- Bank 2 -->
+    <div class="card" style="background:var(--dk);border-top:3px solid #4FC3F7;padding:14px 16px;gap:9px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <div style="font-size:15px;font-weight:700;color:#4FC3F7;">B.P. Meridian</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.5);">€ 1.410.000</div>
+      </div>
+      <div class="prod-item" style="border-left-color:var(--c-gp);"><div><div class="prod-type">Gestione Patrimoniale</div><div class="prod-val">€ 890.000</div></div><div class="prod-badge" style="background:var(--c-gp);">GP</div></div>
+      <div class="prod-item" style="border-left-color:var(--c-dt);"><div><div class="prod-type">Dossier Titoli</div><div class="prod-val">€ 380.000</div></div><div class="prod-badge" style="background:var(--c-dt);">DT</div></div>
+      <div class="prod-item" style="border-left-color:var(--c-fp);"><div><div class="prod-type">Fondo Pensione</div><div class="prod-val">€ 80.000</div></div><div class="prod-badge" style="background:var(--c-fp);">FP</div></div>
+      <div class="prod-item" style="border-left-color:#78909C;"><div><div class="prod-type">C/C (netto FIDO −€160K)</div><div class="prod-val">€ 60.000</div></div><div class="prod-badge" style="background:#78909C;">CC</div></div>
+    </div>
+    <!-- Bank 3 -->
+    <div class="card" style="background:var(--dk);border-top:3px solid #A5D6A7;padding:14px 16px;gap:9px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <div style="font-size:15px;font-weight:700;color:#A5D6A7;">BancaRete Plus</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.5);">€ 950.000</div>
+      </div>
+      <div class="prod-item" style="border-left-color:var(--c-df);"><div><div class="prod-type">Dossier Fondi</div><div class="prod-val">€ 620.000</div></div><div class="prod-badge" style="background:var(--c-df);">DF</div></div>
+      <div class="prod-item" style="border-left-color:var(--c-polIII);"><div><div class="prod-type">Polizza Ramo III</div><div class="prod-val">€ 330.000</div></div><div class="prod-badge" style="background:var(--c-polIII);">RIII</div></div>
+    </div>
+    <!-- Bank 4 -->
+    <div class="card" style="background:var(--dk);border-top:3px solid #CE93D8;padding:14px 16px;gap:9px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <div style="font-size:15px;font-weight:700;color:#CE93D8;">Gestioni Vega</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.5);">€ 840.000</div>
+      </div>
+      <div class="prod-item" style="border-left-color:var(--c-gp);"><div><div class="prod-type">Gestione Patrimoniale</div><div class="prod-val">€ 490.000</div></div><div class="prod-badge" style="background:var(--c-gp);">GP</div></div>
+      <div class="prod-item" style="border-left-color:var(--c-df);"><div><div class="prod-type">Dossier Fondi</div><div class="prod-val">€ 350.000</div></div><div class="prod-badge" style="background:var(--c-df);">DF</div></div>
+    </div>
+  </div>
+
+  <!-- PAGE 6: ASSET ALLOCATION ──────────────── -->
+  <div class="page" id="m6" data-section="01 — Analisi Patrimoniale">
+    <div class="ph">
+      <div><div class="ph-title">Asset Allocation</div><div class="ph-section">Finanziaria · € 5.050.000</div></div>
+      <div class="ph-badge">R</div>
+    </div>
+    <div class="card" style="align-items:center;padding:20px 16px;gap:6px;">
+      <div class="ct">Asset Allocation Attuale</div>
+      <div class="ch-wrap" style="height:340px;">
+        <canvas id="mch-aa" style="width:100%;height:100%;"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">Ripartizione per Asset Class</div>
+      <div id="maa-bars"></div>
+    </div>
+  </div>
+
+  <!-- PAGE 7: DISTRIBUZIONE ──────────────────── -->
+  <div class="page" id="m7" data-section="01 — Analisi Patrimoniale">
+    <div class="ph">
+      <div><div class="ph-title">Distribuzione</div><div class="ph-section">Patrimonio Finanziario</div></div>
+      <div class="ph-badge">R</div>
+    </div>
+    <div class="card">
+      <div class="ct">Intermediari</div>
+      <table class="t">
+        <thead><tr><th>Intermediario</th><th class="r">Valore</th><th class="r">%</th><th class="r">Costi</th></tr></thead>
+        <tbody>
+          <tr><td>W.H. Aurum</td><td class="r">€ 1.850K</td><td class="r">36,6%</td><td class="r red">3,2%</td></tr>
+          <tr><td>B.P. Meridian</td><td class="r">€ 1.410K</td><td class="r">27,9%</td><td class="r red">2,5%</td></tr>
+          <tr><td>BancaRete Plus</td><td class="r">€ 950K</td><td class="r">18,8%</td><td class="r red">2,9%</td></tr>
+          <tr><td>Gestioni Vega</td><td class="r">€ 840K</td><td class="r">16,6%</td><td class="r red">2,4%</td></tr>
+          <tr><td><strong>Totale</strong></td><td class="r"><strong>€ 5.050K</strong></td><td class="r"><strong>100%</strong></td><td class="r red"><strong>2,80%</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card" style="gap:8px;">
+      <div class="ct">Tipo Contenitore</div>
+      <div class="ch-wrap" style="height:220px;"><canvas id="mch-cont" style="width:100%;height:100%;"></canvas></div>
+    </div>
+    <div class="card" style="gap:8px;">
+      <div class="ct">Tipo Strumento</div>
+      <div class="ch-wrap" style="height:220px;"><canvas id="mch-strum" style="width:100%;height:100%;"></canvas></div>
+    </div>
+  </div>
+
+  <!-- PAGE 8: AZIONARIO ──────────────────────── -->
+  <div class="page" id="m8" data-section="01 — Analisi Patrimoniale">
+    <div class="ph">
+      <div><div class="ph-title">Azionario</div><div class="ph-section">€ 705.000 · 14,0% del Finanziario</div></div>
+      <div class="ph-badge">R</div>
+    </div>
+    <div class="card" style="gap:8px;">
+      <div class="ct">Esposizione Settoriale</div>
+      <div class="ch-wrap" style="height:260px;"><canvas id="mch-az-sec" style="width:100%;height:100%;"></canvas></div>
+    </div>
+    <div class="card" style="gap:8px;">
+      <div class="ct">Esposizione Geografica</div>
+      <div class="ch-wrap" style="height:220px;"><canvas id="mch-az-geo" style="width:100%;height:100%;"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">Principali Posizioni</div>
+      <table class="t">
+        <thead><tr><th>Strumento</th><th class="r">Valore</th></tr></thead>
+        <tbody>
+          <tr><td>Fondo Az. Globale Crescita</td><td class="r">€ 185.000</td></tr>
+          <tr><td>ETF MSCI World ESG</td><td class="r">€ 148.000</td></tr>
+          <tr><td>Fondo Settoriale Tecnologia</td><td class="r">€ 120.000</td></tr>
+          <tr><td>SICAV Europa Small Cap</td><td class="r">€ 98.000</td></tr>
+          <tr><td>Az. Mercati Emergenti</td><td class="r">€ 82.000</td></tr>
+          <tr><td>Altri</td><td class="r">€ 72.000</td></tr>
+          <tr><td><strong>Totale</strong></td><td class="r"><strong>€ 705.000</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PAGE 9: OBBLIGAZIONARIO ────────────────── -->
+  <div class="page" id="m9" data-section="01 — Analisi Patrimoniale">
+    <div class="ph">
+      <div><div class="ph-title">Obbligazionario</div><div class="ph-section">€ 2.215.000 · 43,9% del Finanziario</div></div>
+      <div class="ph-badge">R</div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi-cell"><div class="kv lg blue">BBB</div><div class="kl">Rating Medio</div></div>
+      <div class="kpi-cell"><div class="kv lg">4,76</div><div class="kl">Duration Media</div></div>
+    </div>
+    <div class="card" style="gap:8px;">
+      <div class="ct">Esposizione Geografica</div>
+      <div class="ch-wrap" style="height:220px;"><canvas id="mch-ob-geo" style="width:100%;height:100%;"></canvas></div>
+    </div>
+    <div class="card" style="gap:8px;">
+      <div class="ct">Tipo di Rischio</div>
+      <div class="ch-wrap" style="height:200px;"><canvas id="mch-ob-risk" style="width:100%;height:100%;"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">Principali Posizioni</div>
+      <table class="t">
+        <thead><tr><th>Strumento</th><th class="r">Valore</th><th class="r">Rating</th></tr></thead>
+        <tbody>
+          <tr><td>BTP Italia 2029</td><td class="r">€ 360.000</td><td class="r">BBB</td></tr>
+          <tr><td>Fondo Corp. IG EUR</td><td class="r">€ 330.000</td><td class="r">A−</td></tr>
+          <tr><td>Corp. Industriale HY</td><td class="r">€ 270.000</td><td class="r">BB+</td></tr>
+          <tr><td>Gestione Separata</td><td class="r">€ 250.000</td><td class="r">A</td></tr>
+          <tr><td>Fondo HY Globale</td><td class="r">€ 230.000</td><td class="r">B+</td></tr>
+          <tr><td>BTP 2031 4,35%</td><td class="r">€ 205.000</td><td class="r">BBB</td></tr>
+          <tr><td>Obbl. Bancaria Sub.</td><td class="r">€ 180.000</td><td class="r">BBB−</td></tr>
+          <tr><td>Fondo Breve Duration</td><td class="r">€ 155.000</td><td class="r">A</td></tr>
+          <tr><td>Altri</td><td class="r">€ 235.000</td><td class="r">—</td></tr>
+          <tr><td><strong>Totale</strong></td><td class="r"><strong>€ 2.215.000</strong></td><td class="r">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PAGE 10: STRUTTURA DEI COSTI ───────────── -->
+  <div class="page" id="m10" data-section="01 — Analisi Patrimoniale">
+    <div class="ph">
+      <div><div class="ph-title">Struttura dei Costi</div><div class="ph-section">Totale € 141.400 · 2,80%</div></div>
+      <div class="ph-badge">R</div>
+    </div>
+
+    <!-- summary KPI strip -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+      <div style="background:#fff;border-radius:10px;border:1px solid rgba(200,146,74,.12);padding:16px 10px;text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--text);line-height:1;">1%</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text-md);">amministrato</div>
+        <div style="font-size:10px;color:var(--text-lt);">€ 1.548</div>
+      </div>
+      <div style="background:#fff;border-radius:10px;border:1px solid rgba(200,146,74,.15);padding:16px 10px;text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--text);line-height:1;">99%</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text-md);">gestito</div>
+        <div style="font-size:11px;color:var(--text-lt);">€ 139.852</div>
+      </div>
+      <div style="background:#fff;border-radius:10px;border:1px solid rgba(200,146,74,.12);padding:16px 10px;text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--text-lt);line-height:1;">0%</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text-md);">consulenza</div>
+        <div style="font-size:10px;color:var(--text-lt);">€ 0</div>
+      </div>
+    </div>
+
+    <!-- Amministrato -->
+    <div class="card" style="gap:10px;">
+      <div class="ct">Amministrato</div>
+      <table class="t" style="font-size:12px;">
+        <thead><tr><th>Strumento</th><th class="r">Valore</th><th class="r">Costo</th><th class="r">%</th></tr></thead>
+        <tbody>
+          <tr><td>Azioni dirette</td><td class="r">€ 152.340</td><td class="r">€ 0</td><td class="r">0%</td></tr>
+          <tr><td>Obbligazioni dirette</td><td class="r">€ 127.660</td><td class="r">€ 0</td><td class="r">0%</td></tr>
+          <tr><td>Certificati</td><td class="r">€ 120.000</td><td class="r">€ 1.224</td><td class="r">1,02%</td></tr>
+          <tr><td>ETF / ETC / ETN</td><td class="r">€ 100.000</td><td class="r">€ 324</td><td class="r">0,32%</td></tr>
+          <tr><td>Derivati</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+          <tr><td>Trading System</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+          <tr><td><strong>Totale</strong></td><td class="r"><strong>€ 500.000</strong></td><td class="r"><strong>€ 1.548</strong></td><td class="r"><strong>0,31%</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Gestito -->
+    <div class="card" style="gap:10px;">
+      <div class="ct">Gestito</div>
+      <table class="t" style="font-size:12px;">
+        <thead><tr><th>Strumento</th><th class="r">Valore</th><th class="r">Costo</th><th class="r">%</th></tr></thead>
+        <tbody>
+          <tr><td>Fondi (DF)</td><td class="r">€ 1.650.000</td><td class="r">€ 53.295</td><td class="r">3,23%</td></tr>
+          <tr><td>Gestioni Patr.</td><td class="r">€ 1.380.000</td><td class="r">€ 43.746</td><td class="r">3,17%</td></tr>
+          <tr><td>Polizze Ramo I</td><td class="r">€ 480.000</td><td class="r">€ 9.456</td><td class="r">1,97%</td></tr>
+          <tr><td>Polizze Ramo III</td><td class="r">€ 710.000</td><td class="r">€ 28.507</td><td class="r">4,02%</td></tr>
+          <tr><td>Fondi Pensione</td><td class="r">€ 160.000</td><td class="r">€ 4.848</td><td class="r">3,03%</td></tr>
+          <tr><td>PIR</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+          <tr><td><strong>Totale</strong></td><td class="r"><strong>€ 4.380.000</strong></td><td class="r"><strong>€ 139.852</strong></td><td class="r"><strong>3,19%</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Consulenza -->
+    <div class="card" style="gap:10px;">
+      <div class="ct">Consulenza</div>
+      <table class="t" style="font-size:12px;">
+        <thead><tr><th>Strumento</th><th class="r">Valore</th><th class="r">Costo</th><th class="r">%</th></tr></thead>
+        <tbody>
+          <tr><td>Consulenza F.O.</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+          <tr><td>Consulenza Gestione</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+          <tr><td>Altre consulenze</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+          <tr><td><strong>Totale</strong></td><td class="r"><strong>—</strong></td><td class="r"><strong>—</strong></td><td class="r"><strong>—</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- placeholder pages (remaining sections) -->
+  <div class="page dark" id="m11" data-section="Prossime Sezioni">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:36px;color:rgba(200,146,74,.3);">→</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;color:rgba(255,255,255,.5);">Sezioni successive</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.25);">02 Ristrutturazione · 03 Piano · 04 Rendicontazione</div>
+      <div style="font-size:12px;color:rgba(200,146,74,.4);font-style:italic;">In sviluppo — prossimi step</div>
+    </div>
+  </div>
+
+</div><!-- /#scroller -->
+
+<!-- ── BOTTOM NAV ─────────────────────────────── -->
+<div id="bottom-nav">
+  <button class="bn-btn" id="bbp" onclick="mGo(-1)" disabled>&#9664;</button>
+  <div class="bn-center">
+    <div class="bn-count"><span id="bncur">1</span> / <span id="bntot">11</span></div>
+    <div class="bn-sec" id="bnsec">Apertura</div>
+    <div class="bn-prog"><div class="bn-fill" id="bnfill" style="width:9%"></div></div>
+  </div>
+  <button class="bn-btn" id="bbn" onclick="mGo(1)">&#9654;</button>
+</div>
+
+<script>
+// ── Data ────────────────────────────────────────────
+const TT={backgroundColor:'rgba(42,18,0,.92)',titleFont:{size:12,family:"'Playfair Display',serif"},bodyFont:{size:11,family:"'DM Sans',sans-serif"},padding:10,cornerRadius:6};
+
+// ── Navigation ───────────────────────────────────────
+const pages=Array.from(document.querySelectorAll('.page'));
+const scroller=document.getElementById('scroller');
+const NP=pages.length;
+let mCur=0;
+const mInited=new Set();
+
+document.getElementById('bntot').textContent=NP;
+function mUpdateUI(){
+  document.getElementById('bncur').textContent=mCur+1;
+  document.getElementById('bnfill').style.width=((mCur+1)/NP*100)+'%';
+  document.getElementById('bnsec').textContent=pages[mCur].dataset.section||'';
+  document.getElementById('bbp').disabled=(mCur===0);
+  document.getElementById('bbn').disabled=(mCur===NP-1);
+  // update tabs
+  const secs=['Apertura','01 — Analisi Patrimoniale','02','03','04'];
+  const tabMap=[0,0,1,1,1,1,1,1,1,1,1,2];
+  const tabs=document.querySelectorAll('.tab');
+  tabs.forEach(t=>t.classList.remove('active'));
+  const ti=tabMap[mCur]??0; if(tabs[ti]) tabs[ti].classList.add('active');
+}
+function goToPage(i){
+  if(i<0||i>=NP) return;
+  mCur=i;
+  pages[i].scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'});
+  mUpdateUI();
+  if(!mInited.has(i)){mInited.add(i);setTimeout(()=>mInitCharts(i),120);}
+}
+function mGo(d){goToPage(mCur+d);}
+function tabTo(i){goToPage(i);}
+
+// observe scroll position
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const i=pages.indexOf(e.target);
+      if(i>=0&&i!==mCur){mCur=i;mUpdateUI();if(!mInited.has(i)){mInited.add(i);setTimeout(()=>mInitCharts(i),120);}}
+    }
+  });
+},{root:scroller,threshold:0.6});
+pages.forEach(p=>io.observe(p));
+
+// ── Chart helpers ────────────────────────────────────
+function mkDonut(id,labels,vals,colors,legend='bottom'){
+  const ctx=document.getElementById(id); if(!ctx) return;
+  const tot=vals.reduce((a,b)=>a+b,0);
+  new Chart(ctx,{
+    type:'doughnut',
+    data:{labels,datasets:[{data:vals,backgroundColor:colors,borderWidth:0,hoverOffset:6}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{
+        legend:{position:legend,labels:{font:{size:11,family:"'DM Sans',sans-serif"},padding:10,color:'#6B3E1A',boxWidth:11,
+          generateLabels:c=>c.data.labels.map((l,i)=>({text:`${l}  ${(vals[i]/tot*100).toFixed(1)}%`,fillStyle:colors[i],hidden:false,lineWidth:0}))
+        }},
+        tooltip:{callbacks:{label:c=>`€ ${c.parsed.toLocaleString('it-IT')}`},...TT}
+      }
+    }
+  });
+}
+
+// ── Chart init per page ──────────────────────────────
+function mInitCharts(i){
+  const id=pages[i].id;
+  if(id==='m4') mkDonut('mch-patr',['Mobiliare','Immobiliare'],[5050000,6700000],['#C8924A','#1565C0']);
+  if(id==='m6') initMAAFin();
+  if(id==='m7') initMDistrib();
+  if(id==='m8') initMAz();
+  if(id==='m9') initMObbl();
+  // m10 (Struttura Costi) and m11 (placeholder) have no charts
+}
+
+function initMAAFin(){
+  mkDonut('mch-aa',
+    ['Obbligazionario','Azionario','Flessibile/Bil.','Monetario','Liquidità','Derivati','Priv.Equity','Commodities','Venture Cap.'],
+    [2334870,856320,763410,634000,170000,120000,100000,47400,24000],
+    ['#1A237E','#8D1A1A','#2E6B8A','#E65100','#455A64','#1565C0','#6A1B9A','#795548','#00695C']
+  );
+  const data=[
+    ['Obbligazionario',2334870,'#1A237E'],
+    ['Azionario',856320,'#8D1A1A'],
+    ['Flessibile/Bil.',763410,'#2E6B8A'],
+    ['Monetario',634000,'#E65100'],
+    ['Liquidità',170000,'#455A64'],
+    ['Derivati',120000,'#1565C0'],
+    ['Priv.Equity',100000,'#6A1B9A'],
+    ['Commodities',47400,'#795548'],
+    ['Venture Cap.',24000,'#00695C'],
+  ];
+  const wrap=document.getElementById('maa-bars'); if(!wrap) return;
+  data.forEach(([l,v,c])=>{
+    const pct=(v/5050000*100).toFixed(1);
+    const r=document.createElement('div');
+    r.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:7px;';
+    r.innerHTML=`<div style="width:96px;font-size:11.5px;color:var(--text-md);flex-shrink:0;">${l}</div><div style="flex:1;background:rgba(0,0,0,.07);border-radius:4px;height:16px;overflow:hidden;"><div style="width:${pct}%;height:100%;background:${c};border-radius:4px;"></div></div><div style="width:68px;text-align:right;font-size:12px;font-weight:600;color:var(--text);">€ ${(v/1000).toFixed(0)}K</div><div style="width:34px;text-align:right;font-size:11px;color:var(--text-lt);">${pct}%</div>`;
+    wrap.appendChild(r);
+  });
+}
+function initMDistrib(){
+  mkDonut('mch-cont',
+    ['Dossier Fondi','Gest.Patr.','Polizze','Doss.Titoli','FP+Cert.','C/C'],
+    [1650000,1380000,1190000,380000,280000,170000],
+    ['#1A237E','#6A1B9A','#2E7D32','#C8924A','#F57F17','#455A64']
+  );
+  mkDonut('mch-strum',
+    ['SICAV Obbl.','SICAV Az.','Obbl. Dirette','Gest.Separata','Polizze','Liquidità'],
+    [1280000,580000,935000,295000,1190000,770000],
+    ['#1A237E','#8D1A1A','#C8924A','#2E7D32','#00695C','#455A64']
+  );
+}
+function initMAz(){
+  const ctx=document.getElementById('mch-az-sec'); if(!ctx) return;
+  new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['Tecnologia','Finanza','Beni Cons.','Salute','Industriali','Comm.Serv.','Energia','Altri'],
+      datasets:[{data:[183000,120000,99000,92000,78000,63000,42000,28000],
+        backgroundColor:['#7986CB','#F06292','#1565C0','#43A047','#5E1282','#00695C','#BF360C','#78909C'],borderRadius:4,barThickness:18}]
+    },
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`€ ${c.parsed.x.toLocaleString('it-IT')}`},...TT}},
+      scales:{x:{grid:{color:'rgba(42,18,0,.06)'},ticks:{callback:v=>'€'+(v/1000)+'K',font:{size:10},color:'#9E6B3A'}},y:{grid:{display:false},ticks:{font:{size:11},color:'#6B3E1A'}}}
+    }
+  });
+  mkDonut('mch-az-geo',
+    ['Nord America','Europa','Mercati Em.','Asia Svil.','Altro'],
+    [366600,155100,77550,70500,35250],
+    ['#1A237E','#C8924A','#E53935','#43A047','#78909C']
+  );
+}
+function initMObbl(){
+  mkDonut('mch-ob-geo',
+    ['Italia','Eurozona','Europa non EUR','Nord America','Altro'],
+    [800000,575000,310000,415000,115000],
+    ['#1A237E','#C8924A','#6A1B9A','#8D1A1A','#78909C']
+  );
+  mkDonut('mch-ob-risk',
+    ['Corporate IG','Corporate HY','Governativi'],
+    [1101055,722090,391855],
+    ['#1565C0','#C8924A','#2E7D32']
+  );
+}
+
+// ── Boot ────────────────────────────────────────────
+[0,1,2,3,5,10,11].forEach(i=>mInited.add(i));
+mUpdateUI();
+</script>
+</body>
+</html>
