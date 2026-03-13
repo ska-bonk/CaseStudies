@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Analisi Patrimoniale — Famiglia Rossi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#1C0D00; --dk:#2A1200; --dk2:#3D1C00;
+  --gold:#C8924A; --gold-lt:#E0B472;
+  --cream:#FDF6EE; --peach:#F2DEC8;
+  --text:#2A1200; --text-md:#6B3E1A; --text-lt:#9E6B3A;
+  --c-obbl:#1A237E; --c-imm:#1565C0; --c-az:#8D1A1A;
+  --c-liq:#2E7D32; --c-mon:#E65100; --c-pe:#6A1B9A;
+  --c-vc:#00695C; --c-fp:#F57F17; --c-cert:#1565C0; --c-polI:#2E7D32; --c-polIII:#00695C;
+  --c-gp:#5E1282; --c-df:#1A237E; --c-dt:#C8924A;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.4;margin:0;}
+
+/* ══════════════════════════════════════════════════════════════ */
+/* HEADER & NAV */
+/* ══════════════════════════════════════════════════════════════ */
+.header{
+  background:var(--dk);
+  border-bottom:1px solid rgba(200,146,74,.2);
+  padding:16px 32px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.header-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  max-width:1600px;
+  margin:0 auto;
+  margin-bottom:12px;
+}
+
+.header-title{
+  font-family:'Playfair Display',serif;
+  font-size:18px;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:0.5px;
+}
+
+.header-meta{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  font-size:11px;
+  color:var(--text-lt);
+  letter-spacing:0.5px;
+}
+
+.member-pills{
+  display:flex;
+  gap:6px;
+}
+
+.member-pill{
+  background:rgba(200,146,74,.15);
+  border:1px solid rgba(200,146,74,.3);
+  color:var(--gold);
+  padding:4px 10px;
+  border-radius:12px;
+  font-size:10px;
+  font-weight:500;
+}
+
+.member-pill.active{
+  background:rgba(200,146,74,.3);
+}
+
+/* Tab navigation */
+.tab-nav{
+  display:flex;
+  gap:4px;
+  border-top:1px solid rgba(200,146,74,.15);
+  padding-top:12px;
+}
+
+.tab-btn{
+  padding:8px 14px;
+  background:none;
+  border:none;
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;
+  font-weight:500;
+  color:var(--text-lt);
+  cursor:pointer;
+  border-radius:6px 6px 0 0;
+  transition:all 0.2s;
+  letter-spacing:0.3px;
+  text-transform:capitalize;
+}
+
+.tab-btn:hover{
+  background:rgba(200,146,74,.1);
+  color:var(--gold);
+}
+
+.tab-btn.active{
+  background:rgba(200,146,74,.2);
+  color:var(--gold);
+  border-bottom:2px solid var(--gold);
+}
+
+/* ══════════════════════════════════════════════════════════════ */
+/* MAIN CONTENT */
+/* ══════════════════════════════════════════════════════════════ */
+.container{
+  max-width:1600px;
+  margin:0 auto;
+  padding:16px 32px 32px;
+}
+
+.tab-content{
+  display:none;
+}
+
+.tab-content.active{
+  display:block;
+}
+
+/* FILTER BAR */
+.filter-bar{
+  background:rgba(200,146,74,.1);
+  border:1px solid rgba(200,146,74,.2);
+  padding:8px 12px;
+  border-radius:6px;
+  margin-bottom:16px;
+  font-size:11px;
+  color:var(--text-md);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.filter-bar.hidden{
+  display:none;
+}
+
+.filter-label{
+  font-weight:600;
+  color:var(--gold);
+}
+
+.filter-close{
+  background:rgba(200,146,74,.3);
+  border:none;
+  color:var(--gold);
+  padding:2px 6px;
+  border-radius:3px;
+  cursor:pointer;
+  font-size:10px;
+  margin-left:8px;
+}
+
+.filter-close:hover{
+  background:rgba(200,146,74,.5);
+}
+
+/* KPI GRID */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.kpi-card{
+  background:linear-gradient(135deg, rgba(200,146,74,.08) 0%, rgba(200,146,74,.04) 100%);
+  border:1px solid rgba(200,146,74,.2);
+  border-radius:8px;
+  padding:12px;
+  text-align:center;
+}
+
+.kpi-value{
+  font-family:'Playfair Display',serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--gold);
+  line-height:1.1;
+}
+
+.kpi-label{
+  font-size:10px;
+  color:var(--text-lt);
+  margin-top:4px;
+  letter-spacing:0.3px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+
+.kpi-subtitle{
+  font-size:9px;
+  color:var(--text-md);
+  margin-top:3px;
+}
+
+/* CHARTS SIDE-BY-SIDE */
+.chart-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.chart-card{
+  background:linear-gradient(135deg, rgba(200,146,74,.08) 0%, rgba(200,146,74,.04) 100%);
+  border:1px solid rgba(200,146,74,.2);
+  border-radius:8px;
+  padding:12px;
+}
+
+.chart-title{
+  font-size:11px;
+  font-weight:600;
+  color:var(--gold);
+  margin-bottom:8px;
+  letter-spacing:0.3px;
+  text-transform:uppercase;
+}
+
+.chart-wrap{
+  position:relative;
+  height:150px;
+}
+
+canvas{
+  max-height:100%;
+}
+
+/* DENSE TABLES */
+.table-card{
+  background:linear-gradient(135deg, rgba(200,146,74,.08) 0%, rgba(200,146,74,.04) 100%);
+  border:1px solid rgba(200,146,74,.2);
+  border-radius:8px;
+  padding:12px;
+  margin-bottom:20px;
+  overflow-x:auto;
+}
+
+.table-title{
+  font-size:11px;
+  font-weight:600;
+  color:var(--gold);
+  margin-bottom:8px;
+  letter-spacing:0.3px;
+  text-transform:uppercase;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:10px;
+}
+
+thead{
+  background:rgba(200,146,74,.15);
+}
+
+th{
+  padding:6px 8px;
+  text-align:left;
+  font-weight:600;
+  color:var(--gold);
+  border-bottom:1px solid rgba(200,146,74,.2);
+  letter-spacing:0.2px;
+  text-transform:uppercase;
+}
+
+td{
+  padding:5px 8px;
+  border-bottom:1px solid rgba(200,146,74,.1);
+  color:var(--text);
+}
+
+tbody tr:hover{
+  background:rgba(200,146,74,.05);
+}
+
+td.clickable{
+  cursor:pointer;
+  color:var(--gold);
+  text-decoration:underline;
+}
+
+td.clickable:hover{
+  color:var(--gold-lt);
+}
+
+.rating{
+  font-weight:600;
+  color:var(--gold);
+}
+
+/* SECTION LABEL */
+.section-label{
+  font-size:10px;
+  color:var(--text-lt);
+  margin-bottom:4px;
+  letter-spacing:0.3px;
+}
+
+/* ══════════════════════════════════════════════════════════════ */
+/* FOOTER */
+/* ══════════════════════════════════════════════════════════════ */
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:9px;
+  color:var(--text-lt);
+  border-top:1px solid rgba(200,146,74,.2);
+  margin-top:32px;
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- HEADER -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-top">
+    <div class="header-title">Famiglia Rossi — Analisi Patrimoniale</div>
+    <div class="header-meta">
+      <span id="report-date">13 Mar 2026</span>
+      <div class="member-pills">
+        <span class="member-pill active">Paolo Rossi</span>
+        <span class="member-pill">Francesca Rossi</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="patrimonio">Patrimonio</button>
+    <button class="tab-btn" data-tab="allocation">Asset Allocation</button>
+    <button class="tab-btn" data-tab="struttura">Struttura</button>
+    <button class="tab-btn" data-tab="azionario">Azionario</button>
+    <button class="tab-btn" data-tab="obbligazionario">Obbligazionario</button>
+    <button class="tab-btn" data-tab="costi">Costi</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- MAIN CONTAINER -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<div class="container">
+
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!-- TAB: PATRIMONIO -->
+<!-- ──────────────────────────────────────────────────────────────── -->
+<div id="patrimonio" class="tab-content active">
+  <div class="filter-bar hidden" id="filter-bar"></div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value" id="pat-total">€11.7M</div>
+      <div class="kpi-label">Patrimonio Totale</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="pat-finanziario">€5.0M</div>
+      <div class="kpi-label">Finanziario</div>
+      <div class="kpi-subtitle">+0.8% YoY</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="pat-immobiliare">€6.7M</div>
+      <div class="kpi-label">Immobiliare</div>
+      <div class="kpi-subtitle">−1.2% YoY</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="pat-costi">€140K</div>
+      <div class="kpi-label">Costi Annui</div>
+      <div class="kpi-subtitle">2.80% finanziario</div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Composizione Patrimonio</div>
+      <div class="chart-wrap">
+        <canvas id="ch-patrimonio"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Asset Allocation (Finanziario)</div>
+      <div class="chart-wrap">
+        <canvas id="ch-aa-simple"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Per Istituto</div>
+      <div class="chart-wrap">
+        <canvas id="ch-per-bank"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-title">Riepilogo per Istituto</div>
+    <table id="bank-summary-table">
+      <thead>
+        <tr>
+          <th>Istituto</th>
+          <th>Valore</th>
+          <th>% Portafoglio</th>
+          <th>Costi Annui</th>
+          <th>Costi %</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!-- TAB: ASSET ALLOCATION -->
+<!-- ──────────────────────────────────────────────────────────────── -->
+<div id="allocation" class="tab-content">
+  <div class="filter-bar hidden" id="filter-bar-aa"></div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value" id="aa-obbl">46.2%</div>
+      <div class="kpi-label">Obbligazionario</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="aa-az">17.0%</div>
+      <div class="kpi-label">Azionario</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="aa-flex">15.1%</div>
+      <div class="kpi-label">Flessibile</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="aa-liq">3.4%</div>
+      <div class="kpi-label">Liquidità</div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Asset Allocation — Sunburst</div>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="ch-aa-full"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Risk Profile</div>
+      <div class="chart-wrap">
+        <canvas id="ch-risk-profile"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Duration Ponderata</div>
+      <div class="chart-wrap">
+        <canvas id="ch-duration"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Rating Distribution</div>
+      <div class="chart-wrap">
+        <canvas id="ch-ratings"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!-- TAB: STRUTTURA -->
+<!-- ──────────────────────────────────────────────────────────────── -->
+<div id="struttura" class="tab-content">
+  <div class="filter-bar" id="filter-bar-struct">
+    <span class="filter-label">Filtro attivo:</span>
+    <span id="filter-name">—</span>
+    <button class="filter-close" onclick="clearFilter()">Cancella</button>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value" id="str-banks">4</div>
+      <div class="kpi-label">Istituti</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="str-products">11</div>
+      <div class="kpi-label">Prodotti</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="str-avg-cost">2.75%</div>
+      <div class="kpi-label">Costo Medio</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="str-concentration">24.8%</div>
+      <div class="kpi-label">Max Banco</div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-title">Dettaglio Struttura per Istituto</div>
+    <table id="struct-table">
+      <thead>
+        <tr>
+          <th>Istituto</th>
+          <th>Prodotto</th>
+          <th>Valore</th>
+          <th>Regime</th>
+          <th>Container</th>
+          <th>Asset Class</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="table-card">
+    <div class="table-title">Riepilogo per Tipo di Prodotto</div>
+    <table id="product-type-table">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Totale</th>
+          <th>% Portafoglio</th>
+          <th>N. Posizioni</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!-- TAB: AZIONARIO -->
+<!-- ──────────────────────────────────────────────────────────────── -->
+<div id="azionario" class="tab-content">
+  <div class="filter-bar hidden" id="filter-bar-az"></div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">€850K</div>
+      <div class="kpi-label">Totale Azionario</div>
+      <div class="kpi-subtitle">17.0% portafoglio</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">705K</div>
+      <div class="kpi-label">In Fondi</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">4</div>
+      <div class="kpi-label">Principali</div>
+      <div class="kpi-subtitle">posizioni</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">Moderata</div>
+      <div class="kpi-label">Esposizione</div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-title">Principali Posizioni Azionarie</div>
+    <table id="eq-table">
+      <thead>
+        <tr>
+          <th>Posizione</th>
+          <th>Valore</th>
+          <th>% Azionario</th>
+          <th>Istituto</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!-- TAB: OBBLIGAZIONARIO -->
+<!-- ──────────────────────────────────────────────────────────────── -->
+<div id="obbligazionario" class="tab-content">
+  <div class="filter-bar hidden" id="filter-bar-obbl"></div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">€2.31M</div>
+      <div class="kpi-label">Totale Obbl.</div>
+      <div class="kpi-subtitle">46.2% portafoglio</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" id="ob-rating">BBB</div>
+      <div class="kpi-label">Rating Medio</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">4.76</div>
+      <div class="kpi-label">Duration Media</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">€845K</div>
+      <div class="kpi-label">Titoli Diretti</div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Per Rating</div>
+      <div class="chart-wrap">
+        <canvas id="ch-ob-rating"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Geographic</div>
+      <div class="chart-wrap">
+        <canvas id="ch-ob-geo"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Per Tipo</div>
+      <div class="chart-wrap">
+        <canvas id="ch-ob-type"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-title">Principali Posizioni Obbligazionarie</div>
+    <table id="bond-table">
+      <thead>
+        <tr>
+          <th>Emittente</th>
+          <th>Valore</th>
+          <th>Rating</th>
+          <th>Scadenza</th>
+          <th>Istituto</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────────────────────────── -->
+<!-- TAB: COSTI -->
+<!-- ──────────────────────────────────────────────────────────────── -->
+<div id="costi" class="tab-content">
+  <div class="filter-bar hidden" id="filter-bar-costi"></div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">€140K</div>
+      <div class="kpi-label">Costi Totali</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">2.80%</div>
+      <div class="kpi-label">Incidenza</div>
+      <div class="kpi-subtitle">su finanziario</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">2.75%</div>
+      <div class="kpi-label">Media Bancaria</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">+0.05%</div>
+      <div class="kpi-label">Differenziale</div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Per Istituto</div>
+      <div class="chart-wrap">
+        <canvas id="ch-costs-bank"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Per Tipo di Prodotto</div>
+      <div class="chart-wrap">
+        <canvas id="ch-costs-product"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-title">Dettaglio Costi per Istituto</div>
+    <table id="costs-table">
+      <thead>
+        <tr>
+          <th>Istituto</th>
+          <th>Valore AUM</th>
+          <th>% Fee</th>
+          <th>Costi Annui</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<footer>
+  © 2026 Cuniberti &amp; Partners · Documento riservato e confidenziale
+</footer>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- DATA & SCRIPTS -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA MODEL
+// ═══════════════════════════════════════════════════════════════
+const BANKS = [
+  {id:'aurum', name:'W.H. Aurum', color:'#C8924A', costPct:3.2,
+   products:[
+     {type:'DF', label:'Dossier Fondi', val:680000, color:'#1a237e', ac:'Obbligazionario', acPct:.55, acPctAz:.25, acPctFlex:.2, regime:'Gestito', container:'Dossier Fondi', strumento:'SICAV Obbl.'},
+     {type:'RI', label:'Polizza Ramo I', val:480000, color:'#2e7d32', ac:'Obbligazionario', acPct:.85, acPctAz:.0, acPctFlex:.15, regime:'Polizze', container:'Polizze', strumento:'Gest. Separata'},
+     {type:'RIII', label:'Polizza Ramo III', val:380000, color:'#00695c', ac:'Flessibile/Bilanciato', acPct:.3, acPctAz:.4, acPctFlex:.3, regime:'Polizze', container:'Polizze', strumento:'Polizze'},
+     {type:'FP', label:'Fondo Pensione', val:80000, color:'#f57f17', ac:'Obbligazionario', acPct:.6, acPctAz:.3, acPctFlex:.1, regime:'Gestito', container:'F.Pensione+Cert.', strumento:'SICAV Obbl.'},
+     {type:'CT', label:'Certificati', val:120000, color:'#1565c0', ac:'Derivati', acPct:0, acPctAz:0, acPctFlex:0, regime:'Amministrato', container:'F.Pensione+Cert.', strumento:'SICAV Obbl.'},
+     {type:'CC', label:'Conto Corrente', val:110000, color:'#78909c', ac:'Liquidità', acPct:0, acPctAz:0, acPctFlex:0, regime:'Amministrato', container:'C/C', strumento:'Liquidità'}
+   ]},
+  {id:'meridian', name:'B.P. Meridian', color:'#60a5fa', costPct:2.5,
+   products:[
+     {type:'GP', label:'Gestione Patrimoniale', val:890000, color:'#6a1b9a', ac:'Obbligazionario', acPct:.5, acPctAz:.3, acPctFlex:.2, regime:'Gestito', container:'Gestione Patr.', strumento:'SICAV Obbl.'},
+     {type:'DT', label:'Dossier Titoli', val:380000, color:'#c8924a', ac:'Obbligazionario', acPct:.6, acPctAz:.3, acPctFlex:.1, regime:'Amministrato', container:'Dossier Titoli', strumento:'Obbl. Dirette'},
+     {type:'FP', label:'Fondo Pensione', val:80000, color:'#f57f17', ac:'Obbligazionario', acPct:.6, acPctAz:.3, acPctFlex:.1, regime:'Gestito', container:'F.Pensione+Cert.', strumento:'SICAV Obbl.'},
+     {type:'CC', label:'C/C (netto FIDO −€160K)', val:60000, color:'#78909c', ac:'Liquidità', acPct:0, acPctAz:0, acPctFlex:0, regime:'Amministrato', container:'C/C', strumento:'Liquidità'}
+   ]},
+  {id:'bancarete', name:'BancaRete Plus', color:'#4ade80', costPct:2.9,
+   products:[
+     {type:'DF', label:'Dossier Fondi', val:620000, color:'#1a237e', ac:'Obbligazionario', acPct:.5, acPctAz:.3, acPctFlex:.2, regime:'Gestito', container:'Dossier Fondi', strumento:'SICAV Obbl.'},
+     {type:'RIII', label:'Polizza Ramo III', val:330000, color:'#00695c', ac:'Flessibile/Bilanciato', acPct:.3, acPctAz:.4, acPctFlex:.3, regime:'Polizze', container:'Polizze', strumento:'Polizze'}
+   ]},
+  {id:'vega', name:'Gestioni Vega', color:'#c084fc', costPct:2.4,
+   products:[
+     {type:'GP', label:'Gestione Patrimoniale', val:490000, color:'#6a1b9a', ac:'Obbligazionario', acPct:.5, acPctAz:.3, acPctFlex:.2, regime:'Gestito', container:'Gestione Patr.', strumento:'SICAV Obbl.'},
+     {type:'DF', label:'Dossier Fondi', val:350000, color:'#1a237e', ac:'Obbligazionario', acPct:.5, acPctAz:.25, acPctFlex:.25, regime:'Gestito', container:'Dossier Fondi', strumento:'SICAV Azionario'}
+   ]}
+];
+
+const AC_COLORS = {
+  'Obbligazionario':'#1A237E','Azionario':'#8D1A1A','Flessibile/Bilanciato':'#E65100',
+  'Monetario':'#00695C','Liquidità':'#455A64','Derivati':'#1565C0',
+  'Private Equity':'#6A1B9A','Commodities':'#BF360C','Venture Capital':'#2E7D32'
+};
+
+const FULL_AA = [
+  {label:'Obbligazionario', val:2310000}, {label:'Azionario', val:850000},
+  {label:'Flessibile/Bilanciato', val:755000}, {label:'Monetario', val:630000},
+  {label:'Liquidità', val:168000}, {label:'Derivati', val:119000},
+  {label:'Private Equity', val:100000}, {label:'Commodities', val:47000},
+  {label:'Venture Capital', val:21000}
+];
+
+const BOND_POS = [
+  {name:'BTP Italia 2029', val:360000, rating:'BBB', scad:'2029', bank:'aurum'},
+  {name:'Fondo Obbl. Corp. IG EUR', val:330000, rating:'A−', scad:'—', bank:'meridian'},
+  {name:'Obbl. Corp. Industriale HY', val:270000, rating:'BB+', scad:'2027', bank:'bancarete'},
+  {name:'Gestione Separata Vita', val:250000, rating:'A', scad:'—', bank:'aurum'},
+  {name:'Fondo HY Globale', val:230000, rating:'B+', scad:'—', bank:'vega'},
+  {name:'BTP 2031 4,35%', val:205000, rating:'BBB', scad:'2031', bank:'meridian'},
+  {name:'Obbl. Bancaria Subordinata', val:180000, rating:'BBB−', scad:'2028', bank:'bancarete'},
+  {name:'Fondo Obbl. Breve Duration', val:155000, rating:'A', scad:'—', bank:'vega'},
+  {name:'Altri', val:235000, rating:'—', scad:'—', bank:null}
+];
+
+const EQ_POS = [
+  {name:'Fondo Az. Globale Crescita', val:185000, bank:'aurum'},
+  {name:'ETF MSCI World ESG', val:148000, bank:'meridian'},
+  {name:'Fondo Settoriale Tecnologia', val:120000, bank:'bancarete'},
+  {name:'SICAV Europa Small Cap', val:98000, bank:'vega'},
+  {name:'Azionario Mercati Emergenti', val:82000, bank:'aurum'},
+  {name:'Altri', val:72000, bank:null}
+];
+
+let activeFilter = null;
+let charts = {};
+
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+function getTotalAUM() { return 5000000; }
+function getTotalWealth() { return 11700000; }
+function formatCur(v) { return '€' + (v>=1e6 ? (v/1e6).toFixed(1)+'M' : (v/1e3).toFixed(0)+'K'); }
+function formatPct(v) { return (v*100).toFixed(1)+'%'; }
+function bankName(id) { return BANKS.find(b=>b.id===id)?.name || '—'; }
+
+function applyFilter(type, id) {
+  activeFilter = {type, id};
+  updateFilterBar();
+}
+
+function clearFilter() {
+  activeFilter = null;
+  updateFilterBar();
+  refreshAllCharts();
+}
+
+function updateFilterBar() {
+  const bars = document.querySelectorAll('.filter-bar');
+  bars.forEach(b => {
+    if(activeFilter) {
+      b.classList.remove('hidden');
+      const label = activeFilter.type==='bank'
+        ? bankName(activeFilter.id)
+        : activeFilter.id;
+      b.querySelector('#filter-name')?.textContent = label;
+    } else {
+      b.classList.add('hidden');
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// POPULATE TABLES
+// ═══════════════════════════════════════════════════════════════
+function populateTables() {
+  // Bank Summary
+  let html = '';
+  let totalCosts = 0;
+  BANKS.forEach(b => {
+    const val = b.products.reduce((s,p) => s+p.val, 0);
+    const costs = val * b.costPct / 100;
+    totalCosts += costs;
+    html += `<tr><td class="clickable" onclick="applyFilter('bank','${b.id}')">${b.name}</td>
+             <td>${formatCur(val)}</td><td>${(val/getTotalAUM()*100).toFixed(1)}%</td>
+             <td>${formatCur(costs)}</td><td>${b.costPct.toFixed(2)}%</td></tr>`;
+  });
+  document.querySelector('#bank-summary-table tbody').innerHTML = html;
+
+  // Structure table
+  html = '';
+  BANKS.forEach(b => {
+    b.products.forEach(p => {
+      html += `<tr><td class="clickable" onclick="applyFilter('bank','${b.id}')">${b.name}</td>
+               <td>${p.label}</td><td>${formatCur(p.val)}</td><td>${p.regime}</td>
+               <td>${p.container}</td><td>${p.ac}</td></tr>`;
+    });
+  });
+  document.querySelector('#struct-table tbody').innerHTML = html;
+
+  // Product type summary
+  const prodTypes = {};
+  BANKS.forEach(b => {
+    b.products.forEach(p => {
+      if(!prodTypes[p.type]) prodTypes[p.type] = {total:0, count:0, label:p.label.split(' ')[0]};
+      prodTypes[p.type].total += p.val;
+      prodTypes[p.type].count += 1;
+    });
+  });
+  html = '';
+  Object.entries(prodTypes).forEach(([k,v]) => {
+    html += `<tr><td>${v.label}</td><td>${formatCur(v.total)}</td><td>${(v.total/getTotalAUM()*100).toFixed(1)}%</td><td>${v.count}</td></tr>`;
+  });
+  document.querySelector('#product-type-table tbody').innerHTML = html;
+
+  // Equity
+  html = '';
+  EQ_POS.forEach(p => {
+    html += `<tr><td>${p.name}</td><td>${formatCur(p.val)}</td><td>${(p.val/850000*100).toFixed(1)}%</td>
+             <td>${p.bank ? `<span class="clickable" onclick="applyFilter('bank','${p.bank}')">${bankName(p.bank)}</span>` : '—'}</td></tr>`;
+  });
+  document.querySelector('#eq-table tbody').innerHTML = html;
+
+  // Bonds
+  html = '';
+  BOND_POS.forEach(p => {
+    html += `<tr><td>${p.name}</td><td>${formatCur(p.val)}</td><td class="rating">${p.rating}</td><td>${p.scad}</td>
+             <td>${p.bank ? `<span class="clickable" onclick="applyFilter('bank','${p.bank}')">${bankName(p.bank)}</span>` : '—'}</td></tr>`;
+  });
+  document.querySelector('#bond-table tbody').innerHTML = html;
+
+  // Costs
+  html = '';
+  BANKS.forEach(b => {
+    const val = b.products.reduce((s,p) => s+p.val, 0);
+    const costs = val * b.costPct / 100;
+    html += `<tr><td>${b.name}</td><td>${formatCur(val)}</td><td>${b.costPct.toFixed(2)}%</td><td>${formatCur(costs)}</td></tr>`;
+  });
+  document.querySelector('#costs-table tbody').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHARTS
+// ═══════════════════════════════════════════════════════════════
+const chartDefaults = {
+  responsive:true, maintainAspectRatio:false,
+  plugins:{legend:{position:'right',labels:{font:{size:9},boxWidth:10,padding:6}}}
+};
+
+function makeChart(id, type, data, opts) {
+  const ctx = document.getElementById(id)?.getContext('2d');
+  if(!ctx) return;
+  if(charts[id]) charts[id].destroy();
+  charts[id] = new Chart(ctx, {type, data, options:{...chartDefaults,...opts}});
+}
+
+function initCharts() {
+  // Patrimonio composition
+  makeChart('ch-patrimonio', 'doughnut', {
+    labels:['Finanziario','Immobiliare'],
+    datasets:[{data:[5000000,6700000],backgroundColor:['#C8924A','#9E6B3A']}]
+  });
+
+  // AA Simple
+  makeChart('ch-aa-simple', 'doughnut', {
+    labels:['Obbl.','Az.','Flex.','Liq.','Altro'],
+    datasets:[{data:[2310000,850000,755000,168000,917000],
+      backgroundColor:['#1A237E','#8D1A1A','#E65100','#455A64','#BF360C']}]
+  });
+
+  // Per bank
+  const bankVals = BANKS.map(b => b.products.reduce((s,p)=>s+p.val,0));
+  makeChart('ch-per-bank', 'bar', {
+    labels:BANKS.map(b=>b.name.split('.')[1].trim()),
+    datasets:[{label:'AUM',data:bankVals,backgroundColor:['#C8924A','#9E6B3A','#6B3E1A','#C8924A']}]
+  }, {indexAxis:'y'});
+
+  // AA Full (risk categories)
+  makeChart('ch-aa-full', 'bar', {
+    labels:['Obbl.','Azionario','Flessibile','Monetario','Liquidità'],
+    datasets:[{data:[2310000,850000,755000,630000,168000],
+      backgroundColor:['#1A237E','#8D1A1A','#00695C','#E65100','#2E7D32']}]
+  });
+
+  // Risk profile
+  makeChart('ch-risk-profile', 'radar', {
+    labels:['Equity','Credit','Rate','Liq','Concent.'],
+    datasets:[{label:'Portfolio',data:[17,45,38,3,25],borderColor:'#C8924A',backgroundColor:'rgba(200,146,74,.1)'}]
+  }, {plugins:{legend:{position:'bottom'}}});
+
+  // Duration
+  makeChart('ch-duration', 'bar', {
+    labels:['0-2y','2-5y','5-10y','10y+'],
+    datasets:[{data:[450000,680000,920000,260000],backgroundColor:'#1A237E'}]
+  });
+
+  // Ratings
+  const ratingData = {
+    labels:['AAA','AA','A','BBB','BB','B'],
+    datasets:[{data:[120000,340000,580000,890000,310000,70000],backgroundColor:'#C8924A'}]
+  };
+  makeChart('ch-ratings', 'bar', ratingData);
+
+  // Ob by rating
+  makeChart('ch-ob-rating', 'doughnut', {
+    labels:['A','BBB','BB','B'],
+    datasets:[{data:[580000,890000,310000,70000],
+      backgroundColor:['#2E7D32','#F57F17','#E65100','#8D1A1A']}]
+  });
+
+  // Ob geo
+  makeChart('ch-ob-geo', 'pie', {
+    labels:['Italia','EUR','USD','GBP'],
+    datasets:[{data:[800000,900000,450000,160000],
+      backgroundColor:['#1A237E','#1565C0','#6A1B9A','#00695C']}]
+  });
+
+  // Ob type
+  makeChart('ch-ob-type', 'doughnut', {
+    labels:['Sovrani','Corporate','Fondi','Separata'],
+    datasets:[{data:[565000,600000,800000,345000],
+      backgroundColor:['#C8924A','#9E6B3A','#6B3E1A','#E0B472']}]
+  });
+
+  // Costs by bank
+  const costsByBank = BANKS.map(b => (b.products.reduce((s,p)=>s+p.val,0)) * b.costPct / 100);
+  makeChart('ch-costs-bank', 'bar', {
+    labels:BANKS.map(b=>b.name.split('.')[1].trim()),
+    datasets:[{label:'€ Costi',data:costsByBank,backgroundColor:'#C8924A'}]
+  });
+
+  // Costs by product type
+  const costsByType = {};
+  BANKS.forEach(b => {
+    b.products.forEach(p => {
+      if(!costsByType[p.type]) costsByType[p.type] = 0;
+      costsByType[p.type] += p.val * b.costPct / 100;
+    });
+  });
+  const typeLabels = Object.keys(costsByType);
+  makeChart('ch-costs-product', 'bar', {
+    labels:typeLabels,
+    datasets:[{data:Object.values(costsByType),backgroundColor:'#6B3E1A'}]
+  });
+}
+
+function refreshAllCharts() {
+  Object.values(charts).forEach(c => c.destroy?.());
+  charts = {};
+  initCharts();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    const tabId = e.target.dataset.tab;
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId)?.classList.add('active');
+    e.target.classList.add('active');
+    setTimeout(() => Object.values(charts).forEach(c => c.resize?.()), 100);
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  populateTables();
+  initCharts();
+  updateFilterBar();
+});
+</script>
+
+</body>
+</html>
