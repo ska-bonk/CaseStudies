@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rendicontazione Famiglia Rossi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FDF6EE;
+--dk: #F5E8D8;
+--dk2: #E8D5BE;
+--gold: #A07030;
+--gold-lt: #C8924A;
+--cream: #2A1200;
+--text: #2A1200;
+--text-md: #5C3210;
+--text-lt: #7A4E28;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .page-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      border-bottom: 2px solid var(--dk2);
+      padding-bottom: 16px;
+    }
+
+    .header a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .header a:hover {
+      color: var(--gold-lt);
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: var(--cream);
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* Tabs */
+    .tab-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 10px 16px;
+      border: 2px solid var(--dk2);
+      background: transparent;
+      color: var(--text-md);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .tab-btn.active {
+      background-color: var(--gold);
+      color: var(--text);
+      border-color: var(--gold);
+    }
+
+    /* Tab panels */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: var(--dk);
+      border: 1px solid var(--dk2);
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      color: var(--text-md);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gold-lt);
+      line-height: 1.2;
+    }
+
+    .kpi-value.neg {
+      color: #EF5350;
+    }
+
+    .kpi-subtext {
+      font-size: 12px;
+      color: var(--text-lt);
+      margin-top: 6px;
+    }
+
+    /* Main content layout */
+    .content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 1024px) {
+      .content {
+        grid-template-columns: 200px 1fr;
+      }
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--dk);
+      border: 1px solid var(--dk2);
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      color: var(--text-md);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--dk2);
+      font-size: 13px;
+    }
+
+    .sidebar-row:last-child {
+      border-bottom: none;
+    }
+
+    .sidebar-label {
+      color: var(--text-md);
+    }
+
+    .sidebar-value {
+      color: var(--gold-lt);
+      font-weight: 600;
+    }
+
+    .sidebar-swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 6px;
+    }
+
+    /* Main area */
+    .main-area {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    /* Sections */
+    .section {
+      background: var(--dk);
+      border: 1px solid var(--dk2);
+      border-radius: 6px;
+      padding: 20px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--dk2);
+      padding-bottom: 12px;
+    }
+
+    /* Chart containers */
+    .chart-container {
+      position: relative;
+      height: 180px;
+      margin-bottom: 16px;
+    }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    /* Filter buttons */
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 6px 12px;
+      border: 2px solid var(--dk2);
+      background: transparent;
+      color: var(--text-md);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .filter-btn.active {
+      border-color: transparent;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--dk2);
+      color: var(--text-md);
+      font-weight: 600;
+      text-align: left;
+      padding: 10px;
+      border-bottom: 2px solid var(--gold);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid var(--dk2);
+      color: var(--text-md);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    td.value {
+      text-align: right;
+      color: var(--gold-lt);
+      font-weight: 500;
+    }
+
+    td.neg {
+      color: #EF5350;
+    }
+
+    /* Progress bars */
+    .progress-item {
+      margin-bottom: 16px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-md);
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--dk2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 4px;
+    }
+
+    /* Doughnut container */
+    .doughnut-container {
+      position: relative;
+      height: 180px;
+    }
+
+    /* Treemap */
+    .treemap {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .treemap-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 8px;
+    }
+
+    .treemap-cell {
+      padding: 12px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      min-height: 60px;
+    }
+
+    .treemap-label {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .treemap-pct {
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* Cedole grid */
+    .cedole-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .cedola-card {
+      background: var(--dk2);
+      border-left: 4px solid var(--gold);
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 12px;
+    }
+
+    .cedola-label {
+      color: var(--cream);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .cedola-nom {
+      color: var(--text-md);
+      font-size: 11px;
+    }
+
+    /* Azioni prioritarie */
+    .azioni-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .azioni-box {
+      background: var(--dk2);
+      border-left: 5px solid var(--gold);
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 12px;
+    }
+
+    .azioni-title {
+      color: var(--cream);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .azioni-desc {
+      color: var(--text-lt);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    /* Scatter container */
+    .scatter-container {
+      position: relative;
+      height: 200px;
+      margin-bottom: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-container {
+        padding: 16px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <!-- Header -->
+    <div class="header">
+      <a href="index.html">← Indietro</a>
+      <h1>Rendicontazione Famiglia Rossi</h1>
+      <div style="width: 100px;"></div>
+    </div>
+
+    <!-- Tab Buttons -->
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="switchTab('perf')">Performance</button>
+      <button class="tab-btn" onclick="switchTab('obbl')">Obbligazionario</button>
+      <button class="tab-btn" onclick="switchTab('azion')">Azionario</button>
+      <button class="tab-btn" onclick="switchTab('flussi')">Flussi</button>
+      <button class="tab-btn" onclick="switchTab('imm')">Immobiliare</button>
+    </div>
+
+    <!-- TAB 1: PERFORMANCE -->
+    <div id="perf" class="tab-panel active">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Controvalore</div>
+          <div class="kpi-value">€5.162K</div>
+          <div class="kpi-subtext">Banca Nordica S.A.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Performance</div>
+          <div class="kpi-value">+3,24%</div>
+          <div class="kpi-subtext">Lug 2025 → Feb 2026</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Delta Assoluto</div>
+          <div class="kpi-value">+€ 162K</div>
+          <div class="kpi-subtext">Controvalore netto</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Rendimento Annualizzato</div>
+          <div class="kpi-value">+5,5%</div>
+          <div class="kpi-subtext">p.a. Estimated</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- Sidebar: Asset Class -->
+        <div class="sidebar">
+          <div class="sidebar-title">Per Asset Class</div>
+          <div class="sidebar-row">
+            <span class="sidebar-label">Bond</span>
+            <span class="sidebar-value">+2,3%</span>
+          </div>
+          <div class="sidebar-row">
+            <span class="sidebar-label">Equity</span>
+            <span class="sidebar-value">+5,2%</span>
+          </div>
+          <div class="sidebar-row">
+            <span class="sidebar-label">Priv. Equity</span>
+            <span class="sidebar-value">NAV</span>
+          </div>
+          <div class="sidebar-row">
+            <span class="sidebar-label">Liquidità</span>
+            <span class="sidebar-value">€436K</span>
+          </div>
+          <div class="sidebar-row" style="border: none; font-weight: 600; color: var(--gold-lt); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--dk2);">
+            <span class="sidebar-label">Totale</span>
+            <span class="sidebar-value">+3,24%</span>
+          </div>
+        </div>
+
+        <!-- Main: Chart + Table -->
+        <div class="main-area">
+          <div class="section">
+            <div class="filter-buttons">
+              <button class="filter-btn active" style="background-color: #A07030; color: #FDF6EE; border: none;" onclick="perfFilter('all')">Portafoglio</button>
+              <button class="filter-btn" style="border-color: #1A237E; color: #1A237E;" onclick="perfFilter('bond')">Bond</button>
+              <button class="filter-btn" style="border-color: #8D1A1A; color: #8D1A1A;" onclick="perfFilter('equity')">Equity</button>
+              <button class="filter-btn" style="border-color: #6A1B9A; color: #6A1B9A;" onclick="perfFilter('pe')">Priv. Equity</button>
+              <button class="filter-btn" style="border-color: #455A64; color: #455A64;" onclick="perfFilter('liq')">Liquidità</button>
+            </div>
+            <div class="chart-container">
+              <canvas id="perfChart"></canvas>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Performance Contenitori</div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Contenitore</th>
+                    <th>Lug 2025</th>
+                    <th>Dic 2025</th>
+                    <th>Feb 2026</th>
+                    <th>Variazione</th>
+                  </tr>
+                </thead>
+                <tbody id="containersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: OBBLIGAZIONARIO -->
+    <div id="obbl" class="tab-panel">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Rating Medio</div>
+          <div class="kpi-value">BBB+</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Duration</div>
+          <div class="kpi-value">1.40a</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Controvalore</div>
+          <div class="kpi-value">€2.910K</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">% Portafoglio</div>
+          <div class="kpi-value">56,4%</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="chart-row">
+          <div style="position: relative; height: 180px;">
+            <canvas id="geoDoughnut"></canvas>
+          </div>
+          <div style="position: relative; height: 180px;">
+            <canvas id="riskDoughnut"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Rating Breakdown</div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Rating</th>
+                <th>% Portafoglio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A / A+</td>
+                <td class="value">16,9%</td>
+              </tr>
+              <tr>
+                <td>A-</td>
+                <td class="value">11,0%</td>
+              </tr>
+              <tr>
+                <td>BBB+</td>
+                <td class="value">25,0%</td>
+              </tr>
+              <tr>
+                <td>BBB</td>
+                <td class="value">21,0%</td>
+              </tr>
+              <tr>
+                <td>BBB-</td>
+                <td class="value">15,0%</td>
+              </tr>
+              <tr>
+                <td>Sub-IG / HY</td>
+                <td class="value">11,0%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Duration & Maturity</div>
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>Duration</span>
+            <span>1.40 anni</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 35%;"></div>
+          </div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>Maturity</span>
+            <span>1.70 anni</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 42%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: AZIONARIO -->
+    <div id="azion" class="tab-panel">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Controvalore</div>
+          <div class="kpi-value">€1.998K</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">% Portafoglio</div>
+          <div class="kpi-value">38,7%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Performance YTD</div>
+          <div class="kpi-value">+5,2%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Posizioni</div>
+          <div class="kpi-value">17</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Allocazione Settoriale</div>
+        <div class="treemap" id="sectorTreemap"></div>
+      </div>
+
+      <div class="section">
+        <div class="chart-row">
+          <div style="position: relative; height: 180px;">
+            <canvas id="geoDoughnutEq"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Posizioni Top</div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ISIN / Ticker</th>
+                <th>Controvalore</th>
+                <th>% Portafoglio</th>
+                <th>Performance</th>
+              </tr>
+            </thead>
+            <tbody id="eqTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: FLUSSI -->
+    <div id="flussi" class="tab-panel">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Entrate Totali</div>
+          <div class="kpi-value">€907K</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Rimborsi</div>
+          <div class="kpi-value">€850K</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Cedole</div>
+          <div class="kpi-value">€57K</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Prossimi 3 Mesi</div>
+          <div class="kpi-value">€200K</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tasso Cedole Eff.</div>
+          <div class="kpi-value">4,35%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tasso Cedole Nom.</div>
+          <div class="kpi-value">4,30%</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Rimborsi e Cedole Mensili</div>
+        <div class="chart-container">
+          <canvas id="flussiChart"></canvas>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Cedole Attive</div>
+        <div class="cedole-grid" id="cedoleGrid"></div>
+      </div>
+    </div>
+
+    <!-- TAB 5: IMMOBILIARE -->
+    <div id="imm" class="tab-panel">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Valore Commerciale</div>
+          <div class="kpi-value">€2.320K</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Canone Lordo</div>
+          <div class="kpi-value">€189K</div>
+          <div class="kpi-subtext">8,15% sul valore</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Canone Netto</div>
+          <div class="kpi-value">€121K</div>
+          <div class="kpi-subtext">5,23% sul valore</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Spese Annue</div>
+          <div class="kpi-value">€67.8K</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Contributo Netto per Immobile</div>
+        <div class="chart-container">
+          <canvas id="immBarChart"></canvas>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Dettaglio Immobili</div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Immobile</th>
+                <th>Valore €K</th>
+                <th>Canone Lordo</th>
+                <th>Rend. Lordo</th>
+                <th>Spese</th>
+                <th>Canone Netto</th>
+                <th>Rend. Netto</th>
+              </tr>
+            </thead>
+            <tbody id="immTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Rendimento Netto vs Canone Netto</div>
+        <div class="scatter-container">
+          <canvas id="immScatter"></canvas>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Azioni Prioritarie</div>
+        <div class="azioni-grid">
+          <div class="azioni-box">
+            <div class="azioni-title">Revisione locazione Via Aurora</div>
+            <div class="azioni-desc">Rinegoziare il contratto di locazione per adeguare i canoni al mercato attuale.</div>
+          </div>
+          <div class="azioni-box">
+            <div class="azioni-title">Riutilizzo Corso Vittoria 22</div>
+            <div class="azioni-desc">Uffici sfitti: valutare utilizzo alternativo o demolizione e rigenerazione.</div>
+          </div>
+          <div class="azioni-box">
+            <div class="azioni-title">Manutenzione straordinaria</div>
+            <div class="azioni-desc">Pianificare interventi sulla palazzina Via Rossini per migliorare condizioni strutturali.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+    // DATA
+    const MONTHS = ['Lug','Ago','Set','Ott','Nov','Dic','Gen','Feb'];
+    const PERF = {
+      all:   [100,100.8,101.5,101.2,102.0,103.0,103.1,103.24],
+      bond:  [100,100.3,100.6,100.5,101.0,101.8,102.0,102.3],
+      equity:[100,101.5,102.8,102.0,103.2,104.5,104.8,105.2],
+      pe:    [100,100,100,100,100,100,100,100],
+      liq:   [100,100.1,100.2,100.3,100.4,100.5,100.5,100.5]
+    };
+    const PERF_COLORS = {all:'#C8924A',bond:'#1A237E',equity:'#8D1A1A',pe:'#6A1B9A',liq:'#455A64'};
+    const PERF_LABELS = {all:'Portafoglio',bond:'Bond',equity:'Equity',pe:'Priv. Equity',liq:'Liquidità'};
+
+    const AC_PERF = [
+      {name:'Bond', color:'#1A237E', perf:'+2,3%', delta:'+€ 60K'},
+      {name:'Equity', color:'#8D1A1A', perf:'+5,2%', delta:'+€ 88K'},
+      {name:'Priv. Equity', color:'#6A1B9A', perf:'NAV cost', delta:'—'},
+      {name:'Liquidità', color:'#455A64', perf:'—', delta:'€ 436K'}
+    ];
+
+    const CONTAINERS = [
+      {name:'Polizza FID — Bond', lug:'2.565', dic:'2.619', feb:'2.625', delta:'+2,3%', pos:true},
+      {name:'Polizza FID — Equity', lug:'1.710', dic:'1.786', feb:'1.798', delta:'+5,2%', pos:true},
+      {name:'Polizza FID — Priv. Equity', lug:'150', dic:'150', feb:'150', delta:'NAV', pos:false},
+      {name:'Dossier Titoli Obbl.', lug:'150', dic:'153', feb:'153', delta:'+2,0%', pos:true},
+      {name:'Liquidità c/c', lug:'425', dic:'444', feb:'436', delta:'—', pos:false}
+    ];
+
+    const EQ_POS = [
+      {name:'Apple Inc. (AAPL US)', val:312, peso:'15,6%', perf:'+8,2%', pos:true},
+      {name:'ASML Holding NV (ASML NA)', val:278, peso:'13,9%', perf:'+5,7%', pos:true},
+      {name:'Novo Nordisk A/S (NOVOB DC)', val:241, peso:'12,1%', perf:'+11,4%', pos:true},
+      {name:'Microsoft Corp. (MSFT US)', val:218, peso:'10,9%', perf:'+6,1%', pos:true},
+      {name:'LVMH Moet Hennessy (MC FP)', val:186, peso:'9,3%', perf:'-2,1%', pos:false},
+      {name:'Altre posizioni (12 titoli)', val:763, peso:'38,2%', perf:'+3,8%', pos:true}
+    ];
+
+    const SECTORS = [
+      [{label:'Tecnologia',pct:19.8,color:'#1A237E'},{label:'Salute',pct:15.2,color:'#E8A838'}],
+      [{label:'Cons. Ciclici',pct:12.4,color:'#1565C0'},{label:'Industrials',pct:11.3,color:'#E65100'},{label:'Finanza',pct:9.8,color:'#7B1FA2'}],
+      [{label:'Cons. Staples',pct:8.7,color:'#2E7D32'},{label:'Energia',pct:6.4,color:'#BF360C'},{label:'Comm. Serv.',pct:5.9,color:'#00695C'},{label:'Altro',pct:10.5,color:'#546E7A'}]
+    ];
+
+    const FLUSSI_M = [
+      {m:'Mar',rim:0,ced:8.5},{m:'Apr',rim:0,ced:4.2},{m:'Mag',rim:100,ced:5.5},
+      {m:'Giu',rim:0,ced:9.3},{m:'Lug',rim:200,ced:4.1},{m:'Ago',rim:0,ced:3.0},
+      {m:'Set',rim:150,ced:5.8},{m:'Ott',rim:0,ced:4.5},{m:'Nov',rim:200,ced:3.2},
+      {m:'Dic',rim:200,ced:9.1}
+    ];
+
+    const CEDOLE = [
+      {label:'Ced. 4,08% ISP 22/26',nom:'450K nominale',color:'#1A237E'},
+      {label:'Ced. 3,25% UCG 22/27',nom:'300K nominale',color:'#1565C0'},
+      {label:'Ced. 5,00% ISP 24/34 Sub',nom:'200K nominale',color:'#1E88E5'},
+      {label:'Ced. 4,30% ENI 23/28',nom:'150K nominale',color:'#00796B'},
+      {label:'Ced. 3,40% MBanca 22/26',nom:'150K nominale',color:'#455A64'},
+      {label:'Ced. 2,875% GS 14/26',nom:'100K nominale',color:'#8D1A1A'},
+      {label:'Ced. 4,50% Bayer 23/26',nom:'100K nominale',color:'#E65100'},
+      {label:'Ced. BTP 3,875%',nom:'80K nominale',color:'#6A1B9A'}
+    ];
+
+    const IMM = [
+      {name:'Via Aurora 105 — Supermercato', val:1100, lordo:104073, rendL:'9,46%', spese:29439, netto:74634, rendN:6.78},
+      {name:'Via Rossini 8 — Palazzina', val:770, lordo:46200, rendL:'6,00%', spese:9800, netto:36400, rendN:4.73},
+      {name:'Via Colombo 3 — Macelleria', val:140, lordo:24000, rendL:'17,14%', spese:7200, netto:16800, rendN:12.00},
+      {name:'Piazza Navarra 14 — Ristorante', val:110, lordo:14850, rendL:'13,50%', spese:3350, netto:11500, rendN:10.45},
+      {name:'Corso Vittoria 22 — Uffici sfitti', val:200, lordo:0, rendL:'—', spese:18000, netto:-18000, rendN:-9.00}
+    ];
+
+    // Global chart instances
+    let perfChartInstance = null;
+    let currentPerfFilter = 'all';
+
+    // Tab switching
+    function switchTab(tabName) {
+      const tabs = document.querySelectorAll('.tab-panel');
+      const btns = document.querySelectorAll('.tab-btn');
+      tabs.forEach(t => t.classList.remove('active'));
+      btns.forEach(b => b.classList.remove('active'));
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+
+      // Initialize charts when tab becomes visible
+      setTimeout(() => {
+        if (tabName === 'perf' && perfChartInstance === null) initPerfChart();
+        if (tabName === 'obbl') { initGeoDoughnut(); initRiskDoughnut(); }
+        if (tabName === 'azion') { initSectorTreemap(); initGeoDoughnutEq(); }
+        if (tabName === 'flussi') { initFlussiChart(); initCedoleGrid(); }
+        if (tabName === 'imm') { initImmBarChart(); initImmScatter(); }
+      }, 100);
+    }
+
+    // Performance filter
+    function perfFilter(type) {
+      currentPerfFilter = type;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      if (perfChartInstance) perfChartInstance.destroy();
+      initPerfChart();
+    }
+
+    // Initialize performance chart
+    function initPerfChart() {
+      const ctx = document.getElementById('perfChart').getContext('2d');
+      const data = PERF[currentPerfFilter];
+      const color = PERF_COLORS[currentPerfFilter];
+      const label = PERF_LABELS[currentPerfFilter];
+
+      perfChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: MONTHS,
+          datasets: [{
+            label: label,
+            data: data,
+            borderColor: color,
+            backgroundColor: color + '20',
+            tension: 0.3,
+            fill: true,
+            pointRadius: 4,
+            pointBackgroundColor: color,
+            pointBorderColor: '#F5E8D8',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: {
+              beginAtZero: false,
+              min: 98,
+              max: 106,
+              grid: { color: '#C8A88040' },
+              ticks: { color: '#5C3210' }
+            },
+            x: { grid: { display: false }, ticks: { color: '#5C3210' } }
+          }
+        }
+      });
+    }
+
+    // Populate containers table
+    function initContainersTable() {
+      const tbody = document.getElementById('containersTableBody');
+      CONTAINERS.forEach(c => {
+        const row = document.createElement('tr');
+        row.innerHTML = '<td>' + c.name + '</td><td class="value">' + c.lug + '</td><td class="value">' + c.dic + '</td><td class="value">' + c.feb + '</td><td class="value ' + (c.pos ? '' : 'neg') + '">' + c.delta + '</td>';
+        tbody.appendChild(row);
+      });
+    }
+
+    // Initialize geographic doughnut (Bond)
+    function initGeoDoughnut() {
+      const ctx = document.getElementById('geoDoughnut').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Italia','Europa','USA','EM'],
+          datasets: [{
+            data: [48,28,18,6],
+            backgroundColor: ['#1A237E','#1565C0','#1E88E5','#00695C'],
+            borderColor: '#E8D5BE',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'right', labels: { color: '#5C3210' } } }
+        }
+      });
+    }
+
+    // Initialize risk doughnut
+    function initRiskDoughnut() {
+      const ctx = document.getElementById('riskDoughnut').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['IG','HY','Sub-IG'],
+          datasets: [{
+            data: [78,15,7],
+            backgroundColor: ['#2E7D32','#E65100','#BF360C'],
+            borderColor: '#E8D5BE',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'right', labels: { color: '#5C3210' } } }
+        }
+      });
+    }
+
+    // Initialize sector treemap
+    function initSectorTreemap() {
+      const grid = document.getElementById('sectorTreemap');
+      grid.innerHTML = '';
+      SECTORS.forEach(row => {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'treemap-row';
+        row.forEach(sector => {
+          const cell = document.createElement('div');
+          cell.className = 'treemap-cell';
+          cell.style.backgroundColor = sector.color;
+          cell.innerHTML = '<div class="treemap-label">' + sector.label + '</div><div class="treemap-pct">' + sector.pct + '%</div>';
+          rowDiv.appendChild(cell);
+        });
+        grid.appendChild(rowDiv);
+      });
+    }
+
+    // Initialize geographic doughnut (Equity)
+    function initGeoDoughnutEq() {
+      const ctx = document.getElementById('geoDoughnutEq').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Nord America','Europa','Asia','Altro'],
+          datasets: [{
+            data: [42,35,18,5],
+            backgroundColor: ['#8D1A1A','#1A237E','#E8A838','#455A64'],
+            borderColor: '#E8D5BE',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'right', labels: { color: '#5C3210' } } }
+        }
+      });
+    }
+
+    // Populate equity table
+    function initEqTable() {
+      const tbody = document.getElementById('eqTableBody');
+      EQ_POS.forEach(pos => {
+        const row = document.createElement('tr');
+        row.innerHTML = '<td>' + pos.name + '</td><td class="value">€' + pos.val + 'K</td><td class="value">' + pos.peso + '</td><td class="value ' + (pos.pos ? '' : 'neg') + '">' + pos.perf + '</td>';
+        tbody.appendChild(row);
+      });
+    }
+
+    // Initialize flussi chart
+    function initFlussiChart() {
+      const ctx = document.getElementById('flussiChart').getContext('2d');
+      const months = FLUSSI_M.map(f => f.m);
+      const rimborsi = FLUSSI_M.map(f => f.rim);
+      const cedole = FLUSSI_M.map(f => f.ced);
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: months,
+          datasets: [
+            {
+              label: 'Rimborsi',
+              data: rimborsi,
+              backgroundColor: '#6A1B9A',
+              borderRadius: 4
+            },
+            {
+              label: 'Cedole',
+              data: cedole,
+              backgroundColor: '#1A237E',
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'x',
+          plugins: {
+            legend: { position: 'top', labels: { color: '#5C3210' } }
+          },
+          scales: {
+            x: { stacked: true, grid: { display: false }, ticks: { color: '#5C3210' } },
+            y: { stacked: true, grid: { color: '#C8A88040' }, ticks: { color: '#5C3210' } }
+          }
+        }
+      });
+    }
+
+    // Initialize cedole grid
+    function initCedoleGrid() {
+      const grid = document.getElementById('cedoleGrid');
+      grid.innerHTML = '';
+      CEDOLE.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'cedola-card';
+        card.style.borderLeftColor = c.color;
+        card.innerHTML = '<div class="cedola-label">' + c.label + '</div><div class="cedola-nom">' + c.nom + '</div>';
+        grid.appendChild(card);
+      });
+    }
+
+    // Initialize imm bar chart
+    function initImmBarChart() {
+      const ctx = document.getElementById('immBarChart').getContext('2d');
+      const names = IMM.map(i => i.name.split(' — ')[1]).slice(0, 4);
+      const netto = IMM.map(i => i.netto / 1000).slice(0, 4);
+      const colors = ['#2E7D32','#2E7D32','#2E7D32','#2E7D32'];
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: names,
+          datasets: [{
+            label: 'Canone Netto €K',
+            data: netto,
+            backgroundColor: colors,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: '#C8A88040' }, ticks: { color: '#5C3210' } },
+            y: { grid: { display: false }, ticks: { color: '#5C3210' } }
+          }
+        }
+      });
+    }
+
+    // Populate imm table
+    function initImmTable() {
+      const tbody = document.getElementById('immTableBody');
+      IMM.forEach(i => {
+        const row = document.createElement('tr');
+        row.innerHTML = '<td>' + i.name + '</td><td class="value">' + i.val + '</td><td class="value">€' + (i.lordo / 1000).toFixed(1) + 'K</td><td class="value">' + i.rendL + '</td><td class="value">€' + (i.spese / 1000).toFixed(1) + 'K</td><td class="value">€' + (i.netto / 1000).toFixed(1) + 'K</td><td class="value ' + (i.rendN >= 0 ? '' : 'neg') + '">' + i.rendN.toFixed(2) + '%</td>';
+        tbody.appendChild(row);
+      });
+    }
+
+    // Initialize imm scatter
+    function initImmScatter() {
+      const ctx = document.getElementById('immScatter').getContext('2d');
+      const scatterData = IMM.map(i => ({ x: i.netto / 1000, y: i.rendN }));
+
+      new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            label: 'Immobili',
+            data: scatterData,
+            backgroundColor: '#E8A838',
+            borderColor: '#C8924A',
+            borderWidth: 2,
+            pointRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#5C3210' } } },
+          scales: {
+            x: {
+              title: { display: true, text: 'Canone Netto €K', color: '#5C3210' },
+              grid: { color: '#C8A88040' },
+              ticks: { color: '#5C3210' }
+            },
+            y: {
+              title: { display: true, text: 'Rendimento Netto %', color: '#5C3210' },
+              grid: { color: '#C8A88040' },
+              ticks: { color: '#5C3210' }
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize all on load
+    document.addEventListener('DOMContentLoaded', function() {
+      initPerfChart();
+      initContainersTable();
+      initGeoDoughnut();
+      initRiskDoughnut();
+      initSectorTreemap();
+      initGeoDoughnutEq();
+      initEqTable();
+      initFlussiChart();
+      initCedoleGrid();
+      initImmBarChart();
+      initImmTable();
+      initImmScatter();
+    });
+  </script>
+</body>
+</html>

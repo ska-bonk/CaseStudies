@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Deal Immobiliare - Cuniberti & Partners</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #FDF6EE;
+--dk: #F5E8D8;
+--dk2: #E8D5BE;
+--gold: #A07030;
+--gold-lt: #C8924A;
+--cream: #2A1200;
+--text: #2A1200;
+--text-md: #5C3210;
+--text-lt: #7A4E28;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--cream);
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            font-size: 0.95rem;
+            color: var(--gold);
+            margin-top: 5px;
+        }
+
+        .back-link {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 10px 20px;
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color: var(--gold);
+            color: var(--bg);
+        }
+
+        /* Tab Navigation */
+        .tabs-container {
+            margin-bottom: 40px;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid var(--dk);
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-lt);
+            padding: 15px 20px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: var(--gold);
+        }
+
+        .tab-btn.active {
+            color: var(--cream);
+            border-bottom-color: var(--gold);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--cream);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(200, 146, 74, 0.2);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--text);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 10px;
+        }
+
+        .card.editable {
+            border: 2px solid var(--gold);
+            background-color: rgba(200, 146, 74, 0.04);
+        }
+
+        .card.editable .card-title {
+            color: var(--gold);
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Info Cards */
+        .info-card {
+            background-color: rgba(200, 146, 74, 0.08);
+            border-left: 4px solid var(--gold);
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .info-card-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .info-card-text {
+            color: var(--text-md);
+            font-size: 0.85rem;
+        }
+
+        /* Input Fields */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .input-label {
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid var(--dk);
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(200, 146, 74, 0.15);
+        }
+
+        .editable-input {
+            background-color: rgba(200, 146, 74, 0.08) !important;
+            border-left: 3px solid var(--gold) !important;
+            cursor: text;
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--cream);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: var(--dk);
+            color: var(--cream);
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 0.9rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: rgba(200, 146, 74, 0.04);
+        }
+
+        .table-label {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .table-value {
+            color: var(--text-md);
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        .table-value.computed {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .table-value.gold {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Charts */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* Stats */
+        .stat-box {
+            background-color: rgba(200, 146, 74, 0.12);
+            border-left: 4px solid var(--gold);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-md);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Scenario table */
+        .scenario-table {
+            font-size: 0.85rem;
+        }
+
+        .scenario-base {
+            background-color: rgba(200, 146, 74, 0.1) !important;
+            font-weight: 600;
+        }
+
+        /* Highlights */
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(200, 146, 74, 0.15), rgba(224, 180, 114, 0.08));
+            border: 1px solid var(--gold);
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .highlight-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .highlight-text {
+            font-size: 0.85rem;
+            color: var(--text-md);
+            line-height: 1.4;
+        }
+
+        /* Tab 1 Specific */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-card-large {
+            background-color: var(--cream);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--gold);
+        }
+
+        .info-card-large .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .info-card-large .text {
+            font-size: 0.85rem;
+            color: var(--text-md);
+            line-height: 1.5;
+        }
+
+        /* Waterfall Distribution Table */
+        .distribution-table {
+            font-size: 0.9rem;
+        }
+
+        .distribution-table .subtotal-row {
+            background-color: rgba(200, 146, 74, 0.08);
+            font-weight: 600;
+        }
+
+        .distribution-table .total-row {
+            background-color: rgba(200, 146, 74, 0.15);
+            font-weight: 700;
+            border-top: 2px solid var(--gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .highlight-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .tab-nav {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                width: 100%;
+            }
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .two-col-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .two-col-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .value-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.95rem;
+        }
+
+        .value-row:last-child {
+            border-bottom: none;
+        }
+
+        .value-label {
+            color: var(--text-md);
+            font-weight: 500;
+        }
+
+        .value-number {
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        .value-number.gold {
+            color: var(--gold);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>Club Deal Immobiliare</h1>
+                <div class="header-subtitle">Cuniberti & Partners - Modello Finanziario</div>
+            </div>
+            <a href="index.html" class="back-link">← Indietro</a>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tabs-container">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="modello">Modello Struttura</button>
+                <button class="tab-btn" data-tab="simulatore">Simulatore Operazione</button>
+                <button class="tab-btn" data-tab="scenari">Analisi Scenari</button>
+                <button class="tab-btn" data-tab="clausole">Clausole di Garanzia</button>
+                <button class="tab-btn" data-tab="conto-economico">Conto Economico</button>
+                <button class="tab-btn" data-tab="fonti">Fonti di Finanziamento</button>
+            </div>
+        </div>
+
+        <!-- TAB 1: Modello Struttura -->
+        <div id="modello" class="tab-content active">
+            <div class="info-grid">
+                <div class="info-card-large">
+                    <div class="title">SVILUPPO E FRAZIONAMENTO</div>
+                    <div class="text">Focus operativo su asset ad alta commerciabilità per operazioni di frazionamento e trasformazione in più unità residenziali</div>
+                </div>
+                <div class="info-card-large">
+                    <div class="title">HOLDING PERIOD</div>
+                    <div class="text">Operazioni di breve-media durata per ridurre l'esposizione ai rischi di mercato di lungo periodo</div>
+                </div>
+                <div class="info-card-large">
+                    <div class="title">LEVA FINANZIARIA</div>
+                    <div class="text">Indebitamento bancario pari o superiore al 50% del capitale richiesto</div>
+                </div>
+                <div class="info-card-large">
+                    <div class="title">ROI</div>
+                    <div class="text">Target di rendimento sul capitale investito di circa il 25% o superiore</div>
+                </div>
+            </div>
+
+            <div class="two-col-layout">
+                <div class="card">
+                    <div class="card-title">QUOTE CLASSE A (60%)</div>
+                    <div class="value-row">
+                        <span class="value-label">Apporto Capitale</span>
+                        <span class="value-number">60% capitale sociale</span>
+                    </div>
+                    <div class="value-row">
+                        <span class="value-label">Riservate a</span>
+                        <span class="value-number">Sviluppatori e management</span>
+                    </div>
+                    <div class="value-row">
+                        <span class="value-label">Diritto di Governance</span>
+                        <span class="value-number">Pieno controllo operativo</span>
+                    </div>
+                    <div class="value-row">
+                        <span class="value-label">Utili</span>
+                        <span class="value-number">Postergati alle quote B</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">QUOTE CLASSE B (40%)</div>
+                    <div class="value-row">
+                        <span class="value-label">Apporto Capitale</span>
+                        <span class="value-number">40% cap + riserva sovrapprezzo</span>
+                    </div>
+                    <div class="value-row">
+                        <span class="value-label">Riservate a</span>
+                        <span class="value-number">Investitori dei club deal</span>
+                    </div>
+                    <div class="value-row">
+                        <span class="value-label">Diritto Prioritario</span>
+                        <span class="value-number">Prelazione sugli utili</span>
+                    </div>
+                    <div class="value-row">
+                        <span class="value-label">Protezione</span>
+                        <span class="value-number">Clausola anti-dilution</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">Caratteristiche Operative</div>
+            <div class="highlight-grid">
+                <div class="highlight-box">
+                    <div class="highlight-title">SCALABILITÀ</div>
+                    <div class="highlight-text">Modello replicabile su molteplici asset con profilo di rischio e rendimento controllato</div>
+                </div>
+                <div class="highlight-box">
+                    <div class="highlight-title">TRASPARENZA</div>
+                    <div class="highlight-text">Reportistica trimestrale e chiarezza sui flussi finanziari e sulla governance</div>
+                </div>
+                <div class="highlight-box">
+                    <div class="highlight-title">FLESSIBILITÀ</div>
+                    <div class="highlight-text">Struttura adattabile a diversi profili di investimento e condizioni di mercato</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: Simulatore Operazione -->
+        <div id="simulatore" class="tab-content">
+            <!-- Editable Assumptions -->
+            <div class="card editable">
+                <div class="card-title">Assunzioni Finanziarie</div>
+
+                <div class="grid-4">
+                    <div class="input-group">
+                        <label class="input-label">Fabbisogno Totale €</label>
+                        <input type="number" id="inp-fabbisogno" class="editable-input" value="8085010">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">% Caparre</label>
+                        <input type="number" id="inp-caparre-pct" class="editable-input" value="19.09" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">% Debito Bancario</label>
+                        <input type="number" id="inp-debito-pct" class="editable-input" value="50.00" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Ricavi Stimati €</label>
+                        <input type="number" id="inp-ricavi" class="editable-input" value="10100000">
+                    </div>
+                </div>
+
+                <div class="grid-4">
+                    <div class="input-group">
+                        <label class="input-label">Costi Totali €</label>
+                        <input type="number" id="inp-costi" class="editable-input" value="7194000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Aliquota Fiscale %</label>
+                        <input type="number" id="inp-aliquota-fiscal" class="editable-input" value="27.9" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">% Cap.le Sociale su Equity</label>
+                        <input type="number" id="inp-cap-sociale-pct" class="editable-input" value="20.01" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Durata Operazione (mesi)</label>
+                        <input type="number" id="inp-durata" class="editable-input" value="24" step="1">
+                    </div>
+                </div>
+
+                <div class="grid-4">
+                    <div class="input-group">
+                        <label class="input-label">Hurdle Rate annuo %</label>
+                        <input type="number" id="inp-hurdle" class="editable-input" value="12" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">% Quote A</label>
+                        <input type="number" id="inp-quota-a-pct" class="editable-input" value="60" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">% C&P su Equity</label>
+                        <input type="number" id="inp-cp-pct" class="editable-input" value="10" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">% Sviluppatore su Equity</label>
+                        <input type="number" id="inp-svil-pct" class="editable-input" value="50" step="0.01">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fonti di Finanziamento -->
+            <div class="card">
+                <div class="card-title">Calcoli Derivati - Fonti di Finanziamento</div>
+
+                <div class="grid-3">
+                    <div class="stat-box">
+                        <div class="stat-label">Caparre</div>
+                        <div class="stat-value" id="calc-caparre">€ 0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Fabbisogno Netto</div>
+                        <div class="stat-value" id="calc-fabbisogno-netto">€ 0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Debito Massimo</div>
+                        <div class="stat-value" id="calc-debito">€ 0</div>
+                    </div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="stat-box">
+                        <div class="stat-label">Equity Totale</div>
+                        <div class="stat-value gold" id="calc-equity">€ 0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Capitale Sociale</div>
+                        <div class="stat-value" id="calc-cap-sociale">€ 0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Riserva Sovrapprezzo</div>
+                        <div class="stat-value" id="calc-riserva">€ 0</div>
+                    </div>
+                </div>
+
+                <!-- Schema Fonti Finanziamento Chart -->
+                <div style="margin-top: 30px;">
+                    <div class="chart-title">Schema Fonti di Finanziamento</div>
+                    <div class="chart-container">
+                        <canvas id="chart-fonti"></canvas>
+                    </div>
+                </div>
+
+                <!-- Struttura Quote Equity Table -->
+                <div class="section-title">Struttura Quote Equity</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Partecipante</th>
+                                <th style="text-align: right;">Capitale Sociale</th>
+                                <th style="text-align: right;">Riserva Sovrapprezzo</th>
+                                <th style="text-align: right;">Totale Equity</th>
+                                <th style="text-align: right;">% sul Totale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-label">C&P (Quote A)</td>
+                                <td class="table-value computed" id="calc-cp-cap">€ 0</td>
+                                <td class="table-value computed">€ 0</td>
+                                <td class="table-value computed gold" id="calc-cp-tot">€ 0</td>
+                                <td class="table-value computed">0.00%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Sviluppatore (Quote A)</td>
+                                <td class="table-value computed" id="calc-svil-cap">€ 0</td>
+                                <td class="table-value computed">€ 0</td>
+                                <td class="table-value computed gold" id="calc-svil-tot">€ 0</td>
+                                <td class="table-value computed">0.00%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Investitori (Quote B)</td>
+                                <td class="table-value computed" id="calc-inv-cap">€ 0</td>
+                                <td class="table-value computed" id="calc-inv-riserva">€ 0</td>
+                                <td class="table-value computed gold" id="calc-inv-tot">€ 0</td>
+                                <td class="table-value computed">0.00%</td>
+                            </tr>
+                            <tr style="font-weight: 700; background-color: rgba(200,146,74,0.15); border-top: 2px solid var(--gold);">
+                                <td class="table-label">TOTALE</td>
+                                <td class="table-value computed" id="calc-cap-sociale-tot">€ 0</td>
+                                <td class="table-value computed" id="calc-riserva-tot">€ 0</td>
+                                <td class="table-value computed gold" id="calc-equity-tot">€ 0</td>
+                                <td class="table-value computed">100.00%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Conto Economico Derivato -->
+            <div class="card">
+                <div class="card-title">Conto Economico</div>
+
+                <div class="value-row">
+                    <span class="value-label">Ricavi Totali</span>
+                    <span class="value-number computed" id="calc-ricavi-tot">€ 0</span>
+                </div>
+                <div class="value-row">
+                    <span class="value-label">Costi Totali</span>
+                    <span class="value-number computed" id="calc-costi-tot">€ 0</span>
+                </div>
+                <div class="value-row">
+                    <span class="value-label" style="font-weight: 700;">MOL (Utile Lordo)</span>
+                    <span class="value-number computed gold" id="calc-mol" style="font-weight: 700;">€ 0</span>
+                </div>
+                <div class="value-row">
+                    <span class="value-label">Imposte (@ aliquota)</span>
+                    <span class="value-number computed" id="calc-imposte">€ 0</span>
+                </div>
+                <div class="value-row" style="border-top: 2px solid var(--gold); padding-top: 15px; margin-top: 15px;">
+                    <span class="value-label" style="font-weight: 700; font-size: 1.1rem;">Utile Netto</span>
+                    <span class="value-number gold" id="calc-utile-netto" style="font-weight: 700; font-size: 1.1rem;">€ 0</span>
+                </div>
+                <div class="value-row">
+                    <span class="value-label">ROI su Costi %</span>
+                    <span class="value-number computed gold" id="calc-roi-costi">0.00%</span>
+                </div>
+            </div>
+
+            <!-- Distribuzione Utile -->
+            <div class="card">
+                <div class="card-title">Distribuzione Utile (Waterfall)</div>
+
+                <div class="value-row">
+                    <span class="value-label">Hurdle Rate totale operazione %</span>
+                    <span class="value-number computed" id="calc-hurdle-pct">0.00%</span>
+                </div>
+                <div class="value-row">
+                    <span class="value-label">Utile Base @ Hurdle</span>
+                    <span class="value-number computed gold" id="calc-utile-base">€ 0</span>
+                </div>
+                <div class="value-row">
+                    <span class="value-label">Extrarendimento</span>
+                    <span class="value-number computed" id="calc-extra">€ 0</span>
+                </div>
+                <div class="value-row">
+                    <span class="value-label">Performance Fee (50% extra)</span>
+                    <span class="value-number computed" id="calc-perf-fee">€ 0</span>
+                </div>
+
+                <div class="section-title">Riepilogo Distribuzione Finale</div>
+                <div class="table-container">
+                    <table class="distribution-table">
+                        <thead>
+                            <tr>
+                                <th>Partecipante</th>
+                                <th style="text-align: right;">Utile Base</th>
+                                <th style="text-align: right;">Comm. Sviluppo</th>
+                                <th style="text-align: right;">Extra Pro-Quota</th>
+                                <th style="text-align: right;">Totale Utile</th>
+                                <th style="text-align: right;">ROI %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-label">Investitori (B)</td>
+                                <td class="table-value computed" id="dist-inv-base">€ 0</td>
+                                <td class="table-value computed">€ 0</td>
+                                <td class="table-value computed" id="dist-inv-extra">€ 0</td>
+                                <td class="table-value computed gold" id="dist-inv-tot">€ 0</td>
+                                <td class="table-value computed gold" id="dist-inv-roi">0.00%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">C&P (A)</td>
+                                <td class="table-value computed" id="dist-cp-base">€ 0</td>
+                                <td class="table-value computed">€ 0</td>
+                                <td class="table-value computed" id="dist-cp-extra">€ 0</td>
+                                <td class="table-value computed gold" id="dist-cp-tot">€ 0</td>
+                                <td class="table-value computed gold" id="dist-cp-roi">0.00%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Sviluppatore (A)</td>
+                                <td class="table-value computed" id="dist-svil-base">€ 0</td>
+                                <td class="table-value computed gold" id="dist-svil-fee">€ 0</td>
+                                <td class="table-value computed" id="dist-svil-extra">€ 0</td>
+                                <td class="table-value computed gold" id="dist-svil-tot">€ 0</td>
+                                <td class="table-value computed gold" id="dist-svil-roi">0.00%</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td class="table-label">TOTALE</td>
+                                <td class="table-value" id="dist-total-base">€ 0</td>
+                                <td class="table-value" id="dist-total-fee">€ 0</td>
+                                <td class="table-value" id="dist-total-extra">€ 0</td>
+                                <td class="table-value gold" id="dist-total-utile">€ 0</td>
+                                <td class="table-value">—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-title">Rendimenti Sintetici per Partecipante</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Partecipante</th>
+                                <th style="text-align: right;">Capitale Investito €</th>
+                                <th style="text-align: right;">Utile €</th>
+                                <th style="text-align: right;">ROI %</th>
+                                <th style="text-align: right;">Multiplo</th>
+                                <th style="text-align: right;">CAGR %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-label">Investitori B</td>
+                                <td class="table-value computed" id="rend-inv-cap">€ 0</td>
+                                <td class="table-value computed" id="rend-inv-utile">€ 0</td>
+                                <td class="table-value computed gold" id="rend-inv-roi">0.00%</td>
+                                <td class="table-value computed" id="rend-inv-mult">0.00x</td>
+                                <td class="table-value computed gold" id="rend-inv-cagr">0.00%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">C&P A</td>
+                                <td class="table-value computed" id="rend-cp-cap">€ 0</td>
+                                <td class="table-value computed" id="rend-cp-utile">€ 0</td>
+                                <td class="table-value computed gold" id="rend-cp-roi">0.00%</td>
+                                <td class="table-value computed" id="rend-cp-mult">0.00x</td>
+                                <td class="table-value computed gold" id="rend-cp-cagr">0.00%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Sviluppatore A</td>
+                                <td class="table-value computed" id="rend-svil-cap">€ 0</td>
+                                <td class="table-value computed" id="rend-svil-utile">€ 0</td>
+                                <td class="table-value computed gold" id="rend-svil-roi">0.00%</td>
+                                <td class="table-value computed" id="rend-svil-mult">0.00x</td>
+                                <td class="table-value computed gold" id="rend-svil-cagr">0.00%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: Analisi Scenari -->
+        <div id="scenari" class="tab-content">
+            <div class="card">
+                <div class="card-title">Analisi Scenari - Sensibilità su Ricavi</div>
+
+                <div class="table-container">
+                    <table class="scenario-table">
+                        <thead>
+                            <tr>
+                                <th>Variazione Ricavi %</th>
+                                <th style="text-align: right;">Ricavi €</th>
+                                <th style="text-align: right;">Utile Pre-Tasse €</th>
+                                <th style="text-align: right;">Utile Netto €</th>
+                                <th style="text-align: right;">ROI su Costi %</th>
+                                <th style="text-align: right;">ROI Inv. %</th>
+                                <th style="text-align: right;">CAGR Inv. %</th>
+                                <th style="text-align: right;">ROI Quote A %</th>
+                                <th style="text-align: right;">CAGR Quote A %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scenario-tbody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <div class="chart-title">ROI per Scenario</div>
+                    <div class="chart-container">
+                        <canvas id="chart-scenari"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: Clausole di Garanzia -->
+        <div id="clausole" class="tab-content">
+            <div class="card">
+                <div class="card-title">Clausole di Garanzia per Quote B</div>
+
+                <div style="margin-top: 20px;">
+                    <div class="info-card" style="margin-bottom: 20px;">
+                        <div class="info-card-title">1. Distribuzione Utili con Metodologia Waterfall</div>
+                        <div class="info-card-text">Distribuzione utili mediante metodologia Waterfall e prelazione sugli utili con rendimento annuo del 12%. Gli investitori della classe B beneficiano di una priorità nella distribuzione dei dividendi, garantendo un rendimento minimo annualizzato rispetto al capitale investito, prima della distribuzione ai soci di classe A.</div>
+                    </div>
+
+                    <div class="info-card" style="margin-bottom: 20px;">
+                        <div class="info-card-title">2. Clausola Anti-Dilution</div>
+                        <div class="info-card-text">Clausola anti diluition. Protezione contro fenomeni di diluizione della partecipazione in caso di aumenti di capitale non proporzionali. La quota degli investitori rimane protetta da eventuali emissioni di nuove quote che potrebbero ridurre il valore della partecipazione.</div>
+                    </div>
+
+                    <div class="info-card" style="margin-bottom: 20px;">
+                        <div class="info-card-title">3. Reportistica Trimestrale</div>
+                        <div class="info-card-text">Fornitura di reportistica trimestrale agli investitori ai fini di chiarezza e trasparenza dell'operazione. I soci ricevono aggiornamenti periodici sullo stato di avanzamento della realizzazione immobiliare, sui flussi finanziari, e sulla performance dell'investimento.</div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card-title">4. Garanzia sulle Caparre</div>
+                        <div class="info-card-text">Impegno dello sviluppatore di sostenere e garantire il valore delle caparre inserite in business plan. Lo sviluppatore si impegna a garantire il valore del versamento in caparre qualora il valore di mercato dovesse subire variazioni significative, proteggendo il capitale iniziale investito.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: Conto Economico -->
+        <div id="conto-economico" class="tab-content">
+            <div class="card editable">
+                <div class="card-title">Ricavi Stimati</div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label class="input-label">Vendita Unità Immobiliari €</label>
+                        <input type="number" id="inp-vendita-unita" class="editable-input" value="9500000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Vendita Box / Posti Auto €</label>
+                        <input type="number" id="inp-box-auto" class="editable-input" value="400000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Oneri a Carico Acquirenti €</label>
+                        <input type="number" id="inp-oneri-acq" class="editable-input" value="200000">
+                    </div>
+                </div>
+
+                <div class="value-row" style="border-top: 2px solid var(--gold); padding-top: 15px; margin-top: 15px;">
+                    <span class="value-label" style="font-weight: 700;">Totale Ricavi</span>
+                    <span class="value-number gold" id="calc-ricavi-pe" style="font-weight: 700;">€ 0</span>
+                </div>
+            </div>
+
+            <div class="card editable">
+                <div class="card-title">Costi Stimati</div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label class="input-label">A) Acquisto Fabbricato / Terreno €</label>
+                        <input type="number" id="inp-acquisto" class="editable-input" value="3200000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">B) Costo Costruzione + Imprevisti €</label>
+                        <input type="number" id="inp-costruzione" class="editable-input" value="2400000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">C) Oneri di Concessione €</label>
+                        <input type="number" id="inp-concessioni" class="editable-input" value="350000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">D) Progettazione e Professionisti €</label>
+                        <input type="number" id="inp-progettazione" class="editable-input" value="450000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">E) Servizi GP (DL, PM, gestione) €</label>
+                        <input type="number" id="inp-servizi-gp" class="editable-input" value="500000">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">F) Commercializzazione e Varie €</label>
+                        <input type="number" id="inp-commercializzazione" class="editable-input" value="294000">
+                    </div>
+                </div>
+
+                <div class="value-row" style="border-top: 2px solid var(--gold); padding-top: 15px; margin-top: 15px;">
+                    <span class="value-label" style="font-weight: 700;">Totale Costi</span>
+                    <span class="value-number gold" id="calc-costi-pe" style="font-weight: 700;">€ 0</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Margini e Risultato</div>
+
+                <div class="value-row">
+                    <span class="value-label">MOL (Margine Operativo Lordo)</span>
+                    <span class="value-number computed gold" id="calc-mol-pe">€ 0</span>
+                </div>
+
+                <div class="input-group" style="margin-top: 20px;">
+                    <label class="input-label">Oneri Finanziari €</label>
+                    <input type="number" id="inp-oneri-finanziari" class="editable-input" value="420000">
+                </div>
+
+                <div class="value-row">
+                    <span class="value-label">Margine Netto Ante Imposte</span>
+                    <span class="value-number computed gold" id="calc-margine-netto-pe">€ 0</span>
+                </div>
+                <div class="value-row">
+                    <span class="value-label">Imposte (@ aliquota)</span>
+                    <span class="value-number computed" id="calc-imposte-pe">€ 0</span>
+                </div>
+                <div class="value-row" style="border-top: 2px solid var(--gold); padding-top: 15px; margin-top: 15px;">
+                    <span class="value-label" style="font-weight: 700; font-size: 1.1rem;">Risultato Netto Post Imposte</span>
+                    <span class="value-number gold" id="calc-risultato-netto-pe" style="font-weight: 700; font-size: 1.1rem;">€ 0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: Fonti di Finanziamento -->
+        <div id="fonti" class="tab-content">
+            <div class="card">
+                <div class="card-title">Schema Fonti di Finanziamento</div>
+
+                <div style="margin-top: 20px;">
+                    <div class="chart-title">Composizione Finanziamento</div>
+                    <div class="grid-2">
+                        <div class="chart-container">
+                            <canvas id="chart-fonti-pie"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chart-fonti-bar"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Dettaglio Fonti</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fonte di Finanziamento</th>
+                                <th style="text-align: right;">Importo €</th>
+                                <th style="text-align: right;">% del Totale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-label">Caparre (da Acquirenti)</td>
+                                <td class="table-value computed gold" id="fonti-caparre">€ 0</td>
+                                <td class="table-value computed" id="fonti-caparre-pct">0.00%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Finanziamento Bancario</td>
+                                <td class="table-value computed gold" id="fonti-banche">€ 0</td>
+                                <td class="table-value computed" id="fonti-banche-pct">0.00%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-label">Equity (Capitale Proprio)</td>
+                                <td class="table-value computed gold" id="fonti-equity">€ 0</td>
+                                <td class="table-value computed" id="fonti-equity-pct">0.00%</td>
+                            </tr>
+                            <tr style="font-weight: 700; background-color: rgba(200,146,74,0.15); border-top: 2px solid var(--gold);">
+                                <td class="table-label">TOTALE FABBISOGNO</td>
+                                <td class="table-value computed gold" id="fonti-totale">€ 0</td>
+                                <td class="table-value computed">100.00%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-title">Analisi Leva Finanziaria</div>
+                <div class="grid-3">
+                    <div class="stat-box">
+                        <div class="stat-label">Rapporto Debito / Equity</div>
+                        <div class="stat-value" id="calc-leverage-ratio">0.00x</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Debito / Fabbisogno</div>
+                        <div class="stat-value" id="calc-leverage-fab">0.00%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Equity / Fabbisogno</div>
+                        <div class="stat-value" id="calc-equity-fab">0.00%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ STATE MANAGEMENT ============
+        const STATE = {
+            // Assumptions
+            fabbisogno: 8085010,
+            caparre_pct: 19.09,
+            debito_pct: 50.00,
+            ricavi: 10100000,
+            costi: 7194000,
+            aliquota_fiscal: 27.9,
+            cap_sociale_pct: 20.01,
+            durata_mesi: 24,
+            hurdle_rate: 12,
+            quota_a_pct: 60,
+            cp_pct: 10,
+            svil_pct: 50,
+
+            // P&L Details
+            vendita_unita: 9500000,
+            box_auto: 400000,
+            oneri_acq: 200000,
+            acquisto: 3200000,
+            costruzione: 2400000,
+            concessioni: 350000,
+            progettazione: 450000,
+            servizi_gp: 500000,
+            commercializzazione: 294000,
+            oneri_finanziari: 420000,
+
+            // Computed values
+            computed: {}
+        };
+
+        const charts = {};
+
+        // ============ NUMBER FORMATTING ============
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('it-IT', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value || 0);
+        }
+
+        function formatPercent(value, decimals = 2) {
+            return (value || 0).toFixed(decimals) + '%';
+        }
+
+        function formatMultiple(value) {
+            return (value || 0).toFixed(2) + 'x';
+        }
+
+        // ============ CALCULATION ENGINE ============
+        function recalc() {
+            const S = STATE;
+
+            // ===== FINANCING STRUCTURE =====
+            const caparre = S.fabbisogno * S.caparre_pct / 100;
+            const fabbisogno_netto = S.fabbisogno - caparre;
+            const debito = S.fabbisogno * S.debito_pct / 100;
+            const equity = S.fabbisogno - caparre - debito;
+            const cap_sociale = equity * S.cap_sociale_pct / 100;
+            const riserva = equity - cap_sociale;
+
+            // Quote allocation
+            const cp_cap = cap_sociale * S.cp_pct / 100;
+            const svil_cap = cap_sociale * S.svil_pct / 100;
+            const inv_cap = cap_sociale * (100 - S.cp_pct - S.svil_pct) / 100;
+            const inv_tot = inv_cap + riserva;
+
+            S.computed.caparre = caparre;
+            S.computed.fabbisogno_netto = fabbisogno_netto;
+            S.computed.debito = debito;
+            S.computed.equity = equity;
+            S.computed.cap_sociale = cap_sociale;
+            S.computed.riserva = riserva;
+            S.computed.cp_cap = cp_cap;
+            S.computed.cp_tot = cp_cap;
+            S.computed.svil_cap = svil_cap;
+            S.computed.svil_tot = svil_cap;
+            S.computed.inv_cap = inv_cap;
+            S.computed.inv_riserva = riserva;
+            S.computed.inv_tot = inv_tot;
+
+            // ===== P&L CALCULATION =====
+            const ricavi_totali = S.vendita_unita + S.box_auto + S.oneri_acq;
+            const costi_totali = S.acquisto + S.costruzione + S.concessioni + S.progettazione + S.servizi_gp + S.commercializzazione;
+            const mol = ricavi_totali - costi_totali;
+            const margine_netto = mol - S.oneri_finanziari;
+            const imposte = margine_netto * S.aliquota_fiscal / 100;
+            const utile_netto = margine_netto - imposte;
+            const roi_costi = utile_netto / costi_totali * 100;
+
+            S.computed.ricavi_totali = ricavi_totali;
+            S.computed.costi_totali = costi_totali;
+            S.computed.mol = mol;
+            S.computed.margine_netto = margine_netto;
+            S.computed.imposte = imposte;
+            S.computed.utile_netto = utile_netto;
+            S.computed.roi_costi = roi_costi;
+
+            // ===== HURDLE & WATERFALL =====
+            const hurdle_pct = S.hurdle_rate * S.durata_mesi / 12;
+            const utile_base = costi_totali * hurdle_pct / 100;
+            const extra = Math.max(utile_netto - utile_base, 0);
+            const perf_fee = extra * 0.5;
+            const extra_remaining = extra * 0.5;
+
+            S.computed.hurdle_pct = hurdle_pct;
+            S.computed.utile_base = utile_base;
+            S.computed.extra = extra;
+            S.computed.perf_fee = perf_fee;
+            S.computed.extra_remaining = extra_remaining;
+
+            // Distribution of base + extra to each stakeholder
+            const quota_b_pct = 100 - S.cp_pct - S.svil_pct;
+
+            const dist_inv_base = utile_base * quota_b_pct / 100;
+            const dist_cp_base = utile_base * S.cp_pct / 100;
+            const dist_svil_base = utile_base * S.svil_pct / 100;
+
+            const dist_inv_extra = extra_remaining * quota_b_pct / 100;
+            const dist_cp_extra = extra_remaining * S.cp_pct / 100;
+            const dist_svil_extra = extra_remaining * S.svil_pct / 100;
+
+            const dist_inv_tot = dist_inv_base + dist_inv_extra;
+            const dist_cp_tot = dist_cp_base + dist_cp_extra;
+            const dist_svil_tot = dist_svil_base + perf_fee + dist_svil_extra;
+
+            const roi_inv = inv_tot > 0 ? dist_inv_tot / inv_tot * 100 : 0;
+            const roi_cp = cp_cap > 0 ? dist_cp_tot / cp_cap * 100 : 0;
+            const roi_svil = svil_cap > 0 ? dist_svil_tot / svil_cap * 100 : 0;
+
+            const cagr_inv = computeCAGR(roi_inv, S.durata_mesi);
+            const cagr_cp = computeCAGR(roi_cp, S.durata_mesi);
+            const cagr_svil = computeCAGR(roi_svil, S.durata_mesi);
+
+            const mult_inv = 1 + roi_inv / 100;
+            const mult_cp = 1 + roi_cp / 100;
+            const mult_svil = 1 + roi_svil / 100;
+
+            S.computed.dist_inv_base = dist_inv_base;
+            S.computed.dist_inv_extra = dist_inv_extra;
+            S.computed.dist_inv_tot = dist_inv_tot;
+            S.computed.roi_inv = roi_inv;
+            S.computed.cagr_inv = cagr_inv;
+            S.computed.mult_inv = mult_inv;
+
+            S.computed.dist_cp_base = dist_cp_base;
+            S.computed.dist_cp_extra = dist_cp_extra;
+            S.computed.dist_cp_tot = dist_cp_tot;
+            S.computed.roi_cp = roi_cp;
+            S.computed.cagr_cp = cagr_cp;
+            S.computed.mult_cp = mult_cp;
+
+            S.computed.dist_svil_base = dist_svil_base;
+            S.computed.dist_svil_extra = dist_svil_extra;
+            S.computed.dist_svil_tot = dist_svil_tot;
+            S.computed.roi_svil = roi_svil;
+            S.computed.cagr_svil = cagr_svil;
+            S.computed.mult_svil = mult_svil;
+
+            // ===== LEVERAGE =====
+            const leverage_ratio = equity > 0 ? debito / equity : 0;
+            const leverage_fab = S.fabbisogno > 0 ? debito / S.fabbisogno * 100 : 0;
+            const equity_fab = S.fabbisogno > 0 ? equity / S.fabbisogno * 100 : 0;
+
+            S.computed.leverage_ratio = leverage_ratio;
+            S.computed.leverage_fab = leverage_fab;
+            S.computed.equity_fab = equity_fab;
+
+            // Update DOM
+            updateDOM();
+            updateCharts();
+        }
+
+        function computeCAGR(roi, months) {
+            const years = months / 12;
+            if (years === 0 || roi < 0) return 0;
+            const cagr = (Math.pow(1 + roi / 100, 1 / years) - 1) * 100;
+            return isFinite(cagr) ? cagr : 0;
+        }
+
+        // ============ DOM UPDATE ============
+        function updateDOM() {
+            const S = STATE.computed;
+
+            // Financing section
+            setHTML('calc-caparre', formatCurrency(S.caparre));
+            setHTML('calc-fabbisogno-netto', formatCurrency(S.fabbisogno_netto));
+            setHTML('calc-debito', formatCurrency(S.debito));
+            setHTML('calc-equity', formatCurrency(S.equity));
+            setHTML('calc-cap-sociale', formatCurrency(S.cap_sociale));
+            setHTML('calc-riserva', formatCurrency(S.riserva));
+
+            // Quote structure table
+            setHTML('calc-cp-cap', formatCurrency(S.cp_cap));
+            setHTML('calc-cp-tot', formatCurrency(S.cp_tot));
+            setHTML('calc-svil-cap', formatCurrency(S.svil_cap));
+            setHTML('calc-svil-tot', formatCurrency(S.svil_tot));
+            setHTML('calc-inv-cap', formatCurrency(S.inv_cap));
+            setHTML('calc-inv-riserva', formatCurrency(S.inv_riserva));
+            setHTML('calc-inv-tot', formatCurrency(S.inv_tot));
+            setHTML('calc-cap-sociale-tot', formatCurrency(S.cap_sociale));
+            setHTML('calc-riserva-tot', formatCurrency(S.riserva));
+            setHTML('calc-equity-tot', formatCurrency(S.equity));
+
+            // P&L
+            setHTML('calc-ricavi-tot', formatCurrency(S.ricavi_totali));
+            setHTML('calc-costi-tot', formatCurrency(S.costi_totali));
+            setHTML('calc-mol', formatCurrency(S.mol));
+            setHTML('calc-imposte', formatCurrency(S.imposte));
+            setHTML('calc-utile-netto', formatCurrency(S.utile_netto));
+            setHTML('calc-roi-costi', formatPercent(S.roi_costi));
+
+            // Waterfall
+            setHTML('calc-hurdle-pct', formatPercent(S.hurdle_pct));
+            setHTML('calc-utile-base', formatCurrency(S.utile_base));
+            setHTML('calc-extra', formatCurrency(S.extra));
+            setHTML('calc-perf-fee', formatCurrency(S.perf_fee));
+
+            // Distribution table
+            setHTML('dist-inv-base', formatCurrency(S.dist_inv_base));
+            setHTML('dist-inv-extra', formatCurrency(S.dist_inv_extra));
+            setHTML('dist-inv-tot', formatCurrency(S.dist_inv_tot));
+            setHTML('dist-inv-roi', formatPercent(S.roi_inv));
+
+            setHTML('dist-cp-base', formatCurrency(S.dist_cp_base));
+            setHTML('dist-cp-extra', formatCurrency(S.dist_cp_extra));
+            setHTML('dist-cp-tot', formatCurrency(S.dist_cp_tot));
+            setHTML('dist-cp-roi', formatPercent(S.roi_cp));
+
+            setHTML('dist-svil-base', formatCurrency(S.dist_svil_base));
+            setHTML('dist-svil-fee', formatCurrency(S.perf_fee));
+            setHTML('dist-svil-extra', formatCurrency(S.dist_svil_extra));
+            setHTML('dist-svil-tot', formatCurrency(S.dist_svil_tot));
+            setHTML('dist-svil-roi', formatPercent(S.roi_svil));
+
+            setHTML('dist-total-base', formatCurrency(S.utile_base));
+            setHTML('dist-total-fee', formatCurrency(S.perf_fee));
+            setHTML('dist-total-extra', formatCurrency(S.extra_remaining));
+            setHTML('dist-total-utile', formatCurrency(S.utile_netto));
+
+            // Return summary
+            setHTML('rend-inv-cap', formatCurrency(S.inv_tot));
+            setHTML('rend-inv-utile', formatCurrency(S.dist_inv_tot));
+            setHTML('rend-inv-roi', formatPercent(S.roi_inv));
+            setHTML('rend-inv-mult', formatMultiple(S.mult_inv));
+            setHTML('rend-inv-cagr', formatPercent(S.cagr_inv));
+
+            setHTML('rend-cp-cap', formatCurrency(S.cp_cap));
+            setHTML('rend-cp-utile', formatCurrency(S.dist_cp_tot));
+            setHTML('rend-cp-roi', formatPercent(S.roi_cp));
+            setHTML('rend-cp-mult', formatMultiple(S.mult_cp));
+            setHTML('rend-cp-cagr', formatPercent(S.cagr_cp));
+
+            setHTML('rend-svil-cap', formatCurrency(S.svil_cap));
+            setHTML('rend-svil-utile', formatCurrency(S.dist_svil_tot));
+            setHTML('rend-svil-roi', formatPercent(S.roi_svil));
+            setHTML('rend-svil-mult', formatMultiple(S.mult_svil));
+            setHTML('rend-svil-cagr', formatPercent(S.cagr_svil));
+
+            // P&L tab (Conto Economico)
+            setHTML('calc-ricavi-pe', formatCurrency(S.ricavi_totali));
+            setHTML('calc-costi-pe', formatCurrency(S.costi_totali));
+            setHTML('calc-mol-pe', formatCurrency(S.mol));
+            setHTML('calc-margine-netto-pe', formatCurrency(S.margine_netto));
+            setHTML('calc-imposte-pe', formatCurrency(S.imposte));
+            setHTML('calc-risultato-netto-pe', formatCurrency(S.utile_netto));
+
+            // Fonti tab
+            setHTML('fonti-caparre', formatCurrency(S.caparre));
+            setHTML('fonti-caparre-pct', formatPercent(S.caparre / STATE.fabbisogno * 100));
+            setHTML('fonti-banche', formatCurrency(S.debito));
+            setHTML('fonti-banche-pct', formatPercent(S.debito / STATE.fabbisogno * 100));
+            setHTML('fonti-equity', formatCurrency(S.equity));
+            setHTML('fonti-equity-pct', formatPercent(S.equity / STATE.fabbisogno * 100));
+            setHTML('fonti-totale', formatCurrency(STATE.fabbisogno));
+
+            setHTML('calc-leverage-ratio', formatMultiple(S.leverage_ratio));
+            setHTML('calc-leverage-fab', formatPercent(S.leverage_fab));
+            setHTML('calc-equity-fab', formatPercent(S.equity_fab));
+        }
+
+        function setHTML(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        }
+
+        // ============ CHARTS ============
+        function updateCharts() {
+            updateChartFonti();
+            updateChartFontiPie();
+            updateChartFontiBar();
+            updateScenarioTable();
+            updateChartScenari();
+        }
+
+        function updateChartFonti() {
+            const ctx = document.getElementById('chart-fonti')?.getContext('2d');
+            if (!ctx) return;
+
+            const data = [STATE.computed.caparre, STATE.computed.debito, STATE.computed.equity];
+            const labels = ['Caparre', 'Debito Bancario', 'Equity'];
+            const colors = ['#E0B472', '#C8924A', '#6B3E1A'];
+
+            if (charts['fonti']) charts['fonti'].destroy();
+
+            charts['fonti'] = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: '#FDF6EE',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#2A1200',
+                                font: { family: "'DM Sans', sans-serif", size: 12 },
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChartFontiPie() {
+            const ctx = document.getElementById('chart-fonti-pie')?.getContext('2d');
+            if (!ctx) return;
+
+            const S = STATE.computed;
+            const data = [S.caparre, S.debito, S.equity];
+            const labels = [
+                'Caparre ' + formatPercent(S.caparre / STATE.fabbisogno * 100),
+                'Debito ' + formatPercent(S.debito / STATE.fabbisogno * 100),
+                'Equity ' + formatPercent(S.equity / STATE.fabbisogno * 100)
+            ];
+            const colors = ['#E0B472', '#C8924A', '#6B3E1A'];
+
+            if (charts['fonti-pie']) charts['fonti-pie'].destroy();
+
+            charts['fonti-pie'] = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: '#FDF6EE',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#2A1200',
+                                font: { family: "'DM Sans', sans-serif", size: 11 },
+                                padding: 10
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChartFontiBar() {
+            const ctx = document.getElementById('chart-fonti-bar')?.getContext('2d');
+            if (!ctx) return;
+
+            const S = STATE.computed;
+
+            if (charts['fonti-bar']) charts['fonti-bar'].destroy();
+
+            charts['fonti-bar'] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Caparre', 'Debito', 'Equity'],
+                    datasets: [{
+                        label: 'Importo €',
+                        data: [S.caparre, S.debito, S.equity],
+                        backgroundColor: ['#E0B472', '#C8924A', '#6B3E1A'],
+                        borderColor: '#FDF6EE',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#2A1200' },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        y: {
+                            ticks: { color: '#2A1200' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateScenarioTable() {
+            const tbody = document.getElementById('scenario-tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            for (let rev_var = -20; rev_var <= 25; rev_var += 5) {
+                const ricavi_scenario = STATE.ricavi * (1 + rev_var / 100);
+                const mol_scenario = ricavi_scenario - STATE.computed.costi_totali;
+                const margine_scenario = mol_scenario - STATE.oneri_finanziari;
+                const imposte_scenario = margine_scenario * STATE.aliquota_fiscal / 100;
+                const utile_scenario = margine_scenario - imposte_scenario;
+                const roi_costi_scenario = utile_scenario / STATE.computed.costi_totali * 100;
+
+                const utile_base_scenario = STATE.computed.costi_totali * STATE.computed.hurdle_pct / 100;
+                const extra_scenario = Math.max(utile_scenario - utile_base_scenario, 0);
+                const perf_fee_scenario = extra_scenario * 0.5;
+                const extra_rem_scenario = extra_scenario * 0.5;
+
+                const quota_b_pct = 100 - STATE.cp_pct - STATE.svil_pct;
+                const dist_inv_base_scenario = utile_base_scenario * quota_b_pct / 100;
+                const dist_inv_extra_scenario = extra_rem_scenario * quota_b_pct / 100;
+                const dist_inv_tot_scenario = dist_inv_base_scenario + dist_inv_extra_scenario;
+                const roi_inv_scenario = STATE.computed.inv_tot > 0 ? dist_inv_tot_scenario / STATE.computed.inv_tot * 100 : 0;
+                const cagr_inv_scenario = computeCAGR(roi_inv_scenario, STATE.durata_mesi);
+
+                const dist_qa_scenario = utile_base_scenario * (STATE.cp_pct + STATE.svil_pct) / 100 + perf_fee_scenario + extra_rem_scenario * (STATE.cp_pct + STATE.svil_pct) / 100;
+                const capital_qa = STATE.computed.cp_cap + STATE.computed.svil_cap;
+                const roi_qa_scenario = capital_qa > 0 ? dist_qa_scenario / capital_qa * 100 : 0;
+                const cagr_qa_scenario = computeCAGR(roi_qa_scenario, STATE.durata_mesi);
+
+                const row = document.createElement('tr');
+                if (rev_var === 0) row.classList.add('scenario-base');
+
+                row.innerHTML = `
+                    <td class="table-value computed">${formatPercent(rev_var)}</td>
+                    <td class="table-value computed">${formatCurrency(ricavi_scenario)}</td>
+                    <td class="table-value computed">${formatCurrency(margine_scenario)}</td>
+                    <td class="table-value computed">${formatCurrency(utile_scenario)}</td>
+                    <td class="table-value computed">${formatPercent(roi_costi_scenario)}</td>
+                    <td class="table-value computed">${formatPercent(roi_inv_scenario)}</td>
+                    <td class="table-value computed">${formatPercent(cagr_inv_scenario)}</td>
+                    <td class="table-value computed">${formatPercent(roi_qa_scenario)}</td>
+                    <td class="table-value computed">${formatPercent(cagr_qa_scenario)}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        function updateChartScenari() {
+            const ctx = document.getElementById('chart-scenari')?.getContext('2d');
+            if (!ctx) return;
+
+            const labels = [];
+            const inv_rois = [];
+            const qa_rois = [];
+
+            for (let rev_var = -20; rev_var <= 25; rev_var += 5) {
+                labels.push(rev_var + '%');
+
+                const ricavi_scenario = STATE.ricavi * (1 + rev_var / 100);
+                const mol_scenario = ricavi_scenario - STATE.computed.costi_totali;
+                const margine_scenario = mol_scenario - STATE.oneri_finanziari;
+                const imposte_scenario = margine_scenario * STATE.aliquota_fiscal / 100;
+                const utile_scenario = margine_scenario - imposte_scenario;
+
+                const utile_base_scenario = STATE.computed.costi_totali * STATE.computed.hurdle_pct / 100;
+                const extra_scenario = Math.max(utile_scenario - utile_base_scenario, 0);
+                const perf_fee_scenario = extra_scenario * 0.5;
+                const extra_rem_scenario = extra_scenario * 0.5;
+
+                const quota_b_pct = 100 - STATE.cp_pct - STATE.svil_pct;
+                const dist_inv_base_scenario = utile_base_scenario * quota_b_pct / 100;
+                const dist_inv_extra_scenario = extra_rem_scenario * quota_b_pct / 100;
+                const dist_inv_tot_scenario = dist_inv_base_scenario + dist_inv_extra_scenario;
+                const roi_inv = STATE.computed.inv_tot > 0 ? dist_inv_tot_scenario / STATE.computed.inv_tot * 100 : 0;
+                inv_rois.push(roi_inv);
+
+                const dist_qa_scenario = utile_base_scenario * (STATE.cp_pct + STATE.svil_pct) / 100 + perf_fee_scenario + extra_rem_scenario * (STATE.cp_pct + STATE.svil_pct) / 100;
+                const capital_qa = STATE.computed.cp_cap + STATE.computed.svil_cap;
+                const roi_qa = capital_qa > 0 ? dist_qa_scenario / capital_qa * 100 : 0;
+                qa_rois.push(roi_qa);
+            }
+
+            if (charts['scenari']) charts['scenari'].destroy();
+
+            charts['scenari'] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'ROI Investitori',
+                            data: inv_rois,
+                            backgroundColor: '#E0B472',
+                            borderColor: '#FDF6EE',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'ROI Quote A',
+                            data: qa_rois,
+                            backgroundColor: '#C8924A',
+                            borderColor: '#FDF6EE',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#2A1200',
+                                font: { family: "'DM Sans', sans-serif", size: 11 },
+                                padding: 10
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: { color: '#2A1200' },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: {
+                            ticks: { color: '#2A1200' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ============ EVENT LISTENERS ============
+        function setupInputs() {
+            // Financing assumptions
+            const inputs = [
+                'fabbisogno', 'caparre-pct', 'debito-pct', 'ricavi', 'costi',
+                'aliquota-fiscal', 'cap-sociale-pct', 'durata', 'hurdle',
+                'quota-a-pct', 'cp-pct', 'svil-pct',
+                'vendita-unita', 'box-auto', 'oneri-acq',
+                'acquisto', 'costruzione', 'concessioni', 'progettazione',
+                'servizi-gp', 'commercializzazione', 'oneri-finanziari'
+            ];
+
+            inputs.forEach(inp => {
+                const id = 'inp-' + inp;
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('change', () => {
+                        const key = inp.replace(/-/g, '_');
+                        STATE[key] = parseFloat(el.value) || 0;
+                        recalc();
+                    });
+                    el.addEventListener('input', () => {
+                        const key = inp.replace(/-/g, '_');
+                        STATE[key] = parseFloat(el.value) || 0;
+                        recalc();
+                    });
+                }
+            });
+        }
+
+        function setupTabs() {
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    const tabId = btn.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+
+        // ============ INIT ============
+        document.addEventListener('DOMContentLoaded', () => {
+            setupInputs();
+            setupTabs();
+            recalc();
+        });
+    </script>
+</body>
+</html>
