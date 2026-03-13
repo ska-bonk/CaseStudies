@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuniberti & Partners</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f1117;
+            color: #e4e4e7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .logo {
+            width: 160px;
+            height: auto;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .logo-placeholder {
+            width: 160px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: #ffffff;
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 0.5rem;
+            letter-spacing: 0.03em;
+        }
+
+        main {
+            width: 100%;
+            max-width: 720px;
+            padding: 3rem 2rem;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 1.2rem;
+        }
+
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #e4e4e7;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .card:nth-child(1) .card-icon { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+        .card:nth-child(2) .card-icon { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .card:nth-child(3) .card-icon { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .card:nth-child(4) .card-icon { background: rgba(244, 114, 182, 0.15); color: #f472b6; }
+        .card:nth-child(5) .card-icon { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+        .card:nth-child(6) .card-icon { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
+
+        .card-text {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .card-desc {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 0.2rem;
+        }
+
+        .card-arrow {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        .card:hover .card-arrow {
+            color: rgba(255, 255, 255, 0.5);
+            transform: translateX(3px);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- LOGO: sostituisci il div qui sotto con: <img src="logo.png" alt="Cuniberti & Partners" class="logo"> -->
+        <div class="logo-placeholder">logo</div>
+
+        <h1>Cuniberti & Partners</h1>
+        <p class="subtitle">Documentazione interna</p>
+    </header>
+
+    <main>
+        <p class="section-label">Documenti</p>
+        <div class="card-list">
+
+            <a href="customer-journey.html" class="card">
+                <div class="card-icon">⟡</div>
+                <div class="card-text">
+                    <div class="card-title">Customer Journey</div>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+
+            <a href="dashboard-analisi.html" class="card">
+                <div class="card-icon">◈</div>
+                <div class="card-text">
+                    <div class="card-title">Dashboard Analisi</div>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+
+            <a href="dashboard-rendicontazione.html" class="card">
+                <div class="card-icon">◉</div>
+                <div class="card-text">
+                    <div class="card-title">Dashboard Rendicontazione</div>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+
+            <a href="dashboard-comitato-investimenti.html" class="card">
+                <div class="card-icon">✦</div>
+                <div class="card-text">
+                    <div class="card-title">Dashboard Comitato Investimenti</div>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+
+            <a href="club-deal-immobiliari.html" class="card">
+                <div class="card-icon">◆</div>
+                <div class="card-text">
+                    <div class="card-title">Club Deal Immobiliari</div>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+
+            <a href="servizi-di-investimento.html" class="card">
+                <div class="card-icon">❖</div>
+                <div class="card-text">
+                    <div class="card-title">Servizi di Investimento</div>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Cuniberti &amp; Partners. Tutti i diritti riservati.
+    </footer>
+
+</body>
+</html>
