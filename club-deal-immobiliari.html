@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
+<html lang="it"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club Deal Immobiliare - Cuniberti & Partners</title>
+    <title>Club Deal Immobiliare - Cuniberti &amp; Partners</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=DM+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
@@ -27,6 +25,7 @@
 --gold: #A07030;
 --gold-lt: #C8924A;
 --cream: #2A1200;
+            --bg-light: #FFFFFF;
 --text: #2A1200;
 --text-md: #5C3210;
 --text-lt: #7A4E28;
@@ -136,11 +135,11 @@
 
         /* Cards */
         .card {
-            background-color: var(--cream);
+            background-color: var(--bg-light);
             border-radius: 8px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(100, 60, 20, 0.08);
             border: 1px solid rgba(200, 146, 74, 0.2);
         }
 
@@ -225,7 +224,7 @@
             border: 1px solid var(--dk);
             border-radius: 4px;
             font-family: 'DM Sans', sans-serif;
-            background-color: var(--cream);
+            background-color: var(--bg-light);
             color: var(--text);
             font-size: 0.95rem;
         }
@@ -251,14 +250,14 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: var(--cream);
+            background-color: var(--bg-light);
             border-radius: 8px;
             overflow: hidden;
         }
 
         thead {
-            background-color: var(--dk);
-            color: var(--cream);
+            background-color: #D4BFA8;
+            color: #2A1200;
         }
 
         th {
@@ -391,10 +390,10 @@
         }
 
         .info-card-large {
-            background-color: var(--cream);
+            background-color: var(--bg-light);
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(100, 60, 20, 0.06);
             border-left: 4px solid var(--gold);
         }
 
@@ -533,7 +532,7 @@
         <div class="header">
             <div>
                 <h1>Club Deal Immobiliare</h1>
-                <div class="header-subtitle">Cuniberti & Partners - Modello Finanziario</div>
+                <div class="header-subtitle">Cuniberti &amp; Partners - Modello Finanziario</div>
             </div>
             <a href="index.html" class="back-link">← Indietro</a>
         </div>
@@ -684,7 +683,7 @@
                         <input type="number" id="inp-quota-a-pct" class="editable-input" value="60" step="0.01">
                     </div>
                     <div class="input-group">
-                        <label class="input-label">% C&P su Equity</label>
+                        <label class="input-label">% C&amp;P su Equity</label>
                         <input type="number" id="inp-cp-pct" class="editable-input" value="10" step="0.01">
                     </div>
                     <div class="input-group">
@@ -701,30 +700,30 @@
                 <div class="grid-3">
                     <div class="stat-box">
                         <div class="stat-label">Caparre</div>
-                        <div class="stat-value" id="calc-caparre">€ 0</div>
+                        <div class="stat-value" id="calc-caparre">1.543.428&nbsp;€</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Fabbisogno Netto</div>
-                        <div class="stat-value" id="calc-fabbisogno-netto">€ 0</div>
+                        <div class="stat-value" id="calc-fabbisogno-netto">6.541.582&nbsp;€</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Debito Massimo</div>
-                        <div class="stat-value" id="calc-debito">€ 0</div>
+                        <div class="stat-value" id="calc-debito">4.042.505&nbsp;€</div>
                     </div>
                 </div>
 
                 <div class="grid-3">
                     <div class="stat-box">
                         <div class="stat-label">Equity Totale</div>
-                        <div class="stat-value gold" id="calc-equity">€ 0</div>
+                        <div class="stat-value gold" id="calc-equity">2.499.077&nbsp;€</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Capitale Sociale</div>
-                        <div class="stat-value" id="calc-cap-sociale">€ 0</div>
+                        <div class="stat-value" id="calc-cap-sociale">500.065&nbsp;€</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Riserva Sovrapprezzo</div>
-                        <div class="stat-value" id="calc-riserva">€ 0</div>
+                        <div class="stat-value" id="calc-riserva">1.999.011&nbsp;€</div>
                     </div>
                 </div>
 
@@ -732,7 +731,7 @@
                 <div style="margin-top: 30px;">
                     <div class="chart-title">Schema Fonti di Finanziamento</div>
                     <div class="chart-container">
-                        <canvas id="chart-fonti"></canvas>
+                        <canvas id="chart-fonti" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas>
                     </div>
                 </div>
 
@@ -751,31 +750,31 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="table-label">C&P (Quote A)</td>
-                                <td class="table-value computed" id="calc-cp-cap">€ 0</td>
+                                <td class="table-label">C&amp;P (Quote A)</td>
+                                <td class="table-value computed" id="calc-cp-cap">50.007&nbsp;€</td>
                                 <td class="table-value computed">€ 0</td>
-                                <td class="table-value computed gold" id="calc-cp-tot">€ 0</td>
+                                <td class="table-value computed gold" id="calc-cp-tot">50.007&nbsp;€</td>
                                 <td class="table-value computed">0.00%</td>
                             </tr>
                             <tr>
                                 <td class="table-label">Sviluppatore (Quote A)</td>
-                                <td class="table-value computed" id="calc-svil-cap">€ 0</td>
+                                <td class="table-value computed" id="calc-svil-cap">250.033&nbsp;€</td>
                                 <td class="table-value computed">€ 0</td>
-                                <td class="table-value computed gold" id="calc-svil-tot">€ 0</td>
+                                <td class="table-value computed gold" id="calc-svil-tot">250.033&nbsp;€</td>
                                 <td class="table-value computed">0.00%</td>
                             </tr>
                             <tr>
                                 <td class="table-label">Investitori (Quote B)</td>
-                                <td class="table-value computed" id="calc-inv-cap">€ 0</td>
-                                <td class="table-value computed" id="calc-inv-riserva">€ 0</td>
-                                <td class="table-value computed gold" id="calc-inv-tot">€ 0</td>
+                                <td class="table-value computed" id="calc-inv-cap">200.026&nbsp;€</td>
+                                <td class="table-value computed" id="calc-inv-riserva">1.999.011&nbsp;€</td>
+                                <td class="table-value computed gold" id="calc-inv-tot">2.199.037&nbsp;€</td>
                                 <td class="table-value computed">0.00%</td>
                             </tr>
                             <tr style="font-weight: 700; background-color: rgba(200,146,74,0.15); border-top: 2px solid var(--gold);">
                                 <td class="table-label">TOTALE</td>
-                                <td class="table-value computed" id="calc-cap-sociale-tot">€ 0</td>
-                                <td class="table-value computed" id="calc-riserva-tot">€ 0</td>
-                                <td class="table-value computed gold" id="calc-equity-tot">€ 0</td>
+                                <td class="table-value computed" id="calc-cap-sociale-tot">500.065&nbsp;€</td>
+                                <td class="table-value computed" id="calc-riserva-tot">1.999.011&nbsp;€</td>
+                                <td class="table-value computed gold" id="calc-equity-tot">2.499.077&nbsp;€</td>
                                 <td class="table-value computed">100.00%</td>
                             </tr>
                         </tbody>
@@ -789,27 +788,27 @@
 
                 <div class="value-row">
                     <span class="value-label">Ricavi Totali</span>
-                    <span class="value-number computed" id="calc-ricavi-tot">€ 0</span>
+                    <span class="value-number computed" id="calc-ricavi-tot">10.100.000&nbsp;€</span>
                 </div>
                 <div class="value-row">
                     <span class="value-label">Costi Totali</span>
-                    <span class="value-number computed" id="calc-costi-tot">€ 0</span>
+                    <span class="value-number computed" id="calc-costi-tot">7.194.000&nbsp;€</span>
                 </div>
                 <div class="value-row">
                     <span class="value-label" style="font-weight: 700;">MOL (Utile Lordo)</span>
-                    <span class="value-number computed gold" id="calc-mol" style="font-weight: 700;">€ 0</span>
+                    <span class="value-number computed gold" id="calc-mol" style="font-weight: 700;">2.906.000&nbsp;€</span>
                 </div>
                 <div class="value-row">
                     <span class="value-label">Imposte (@ aliquota)</span>
-                    <span class="value-number computed" id="calc-imposte">€ 0</span>
+                    <span class="value-number computed" id="calc-imposte">693.594&nbsp;€</span>
                 </div>
                 <div class="value-row" style="border-top: 2px solid var(--gold); padding-top: 15px; margin-top: 15px;">
                     <span class="value-label" style="font-weight: 700; font-size: 1.1rem;">Utile Netto</span>
-                    <span class="value-number gold" id="calc-utile-netto" style="font-weight: 700; font-size: 1.1rem;">€ 0</span>
+                    <span class="value-number gold" id="calc-utile-netto" style="font-weight: 700; font-size: 1.1rem;">1.792.406&nbsp;€</span>
                 </div>
                 <div class="value-row">
                     <span class="value-label">ROI su Costi %</span>
-                    <span class="value-number computed gold" id="calc-roi-costi">0.00%</span>
+                    <span class="value-number computed gold" id="calc-roi-costi">24.92%</span>
                 </div>
             </div>
 
@@ -819,19 +818,19 @@
 
                 <div class="value-row">
                     <span class="value-label">Hurdle Rate totale operazione %</span>
-                    <span class="value-number computed" id="calc-hurdle-pct">0.00%</span>
+                    <span class="value-number computed" id="calc-hurdle-pct">24.00%</span>
                 </div>
                 <div class="value-row">
                     <span class="value-label">Utile Base @ Hurdle</span>
-                    <span class="value-number computed gold" id="calc-utile-base">€ 0</span>
+                    <span class="value-number computed gold" id="calc-utile-base">1.726.560&nbsp;€</span>
                 </div>
                 <div class="value-row">
                     <span class="value-label">Extrarendimento</span>
-                    <span class="value-number computed" id="calc-extra">€ 0</span>
+                    <span class="value-number computed" id="calc-extra">65.846&nbsp;€</span>
                 </div>
                 <div class="value-row">
                     <span class="value-label">Performance Fee (50% extra)</span>
-                    <span class="value-number computed" id="calc-perf-fee">€ 0</span>
+                    <span class="value-number computed" id="calc-perf-fee">32.923&nbsp;€</span>
                 </div>
 
                 <div class="section-title">Riepilogo Distribuzione Finale</div>
@@ -850,34 +849,34 @@
                         <tbody>
                             <tr>
                                 <td class="table-label">Investitori (B)</td>
-                                <td class="table-value computed" id="dist-inv-base">€ 0</td>
+                                <td class="table-value computed" id="dist-inv-base">690.624&nbsp;€</td>
                                 <td class="table-value computed">€ 0</td>
-                                <td class="table-value computed" id="dist-inv-extra">€ 0</td>
-                                <td class="table-value computed gold" id="dist-inv-tot">€ 0</td>
-                                <td class="table-value computed gold" id="dist-inv-roi">0.00%</td>
+                                <td class="table-value computed" id="dist-inv-extra">13.169&nbsp;€</td>
+                                <td class="table-value computed gold" id="dist-inv-tot">703.793&nbsp;€</td>
+                                <td class="table-value computed gold" id="dist-inv-roi">32.00%</td>
                             </tr>
                             <tr>
-                                <td class="table-label">C&P (A)</td>
-                                <td class="table-value computed" id="dist-cp-base">€ 0</td>
+                                <td class="table-label">C&amp;P (A)</td>
+                                <td class="table-value computed" id="dist-cp-base">172.656&nbsp;€</td>
                                 <td class="table-value computed">€ 0</td>
-                                <td class="table-value computed" id="dist-cp-extra">€ 0</td>
-                                <td class="table-value computed gold" id="dist-cp-tot">€ 0</td>
-                                <td class="table-value computed gold" id="dist-cp-roi">0.00%</td>
+                                <td class="table-value computed" id="dist-cp-extra">3292&nbsp;€</td>
+                                <td class="table-value computed gold" id="dist-cp-tot">175.948&nbsp;€</td>
+                                <td class="table-value computed gold" id="dist-cp-roi">351.85%</td>
                             </tr>
                             <tr>
                                 <td class="table-label">Sviluppatore (A)</td>
-                                <td class="table-value computed" id="dist-svil-base">€ 0</td>
-                                <td class="table-value computed gold" id="dist-svil-fee">€ 0</td>
-                                <td class="table-value computed" id="dist-svil-extra">€ 0</td>
-                                <td class="table-value computed gold" id="dist-svil-tot">€ 0</td>
-                                <td class="table-value computed gold" id="dist-svil-roi">0.00%</td>
+                                <td class="table-value computed" id="dist-svil-base">863.280&nbsp;€</td>
+                                <td class="table-value computed gold" id="dist-svil-fee">32.923&nbsp;€</td>
+                                <td class="table-value computed" id="dist-svil-extra">16.462&nbsp;€</td>
+                                <td class="table-value computed gold" id="dist-svil-tot">912.665&nbsp;€</td>
+                                <td class="table-value computed gold" id="dist-svil-roi">365.02%</td>
                             </tr>
                             <tr class="total-row">
                                 <td class="table-label">TOTALE</td>
-                                <td class="table-value" id="dist-total-base">€ 0</td>
-                                <td class="table-value" id="dist-total-fee">€ 0</td>
-                                <td class="table-value" id="dist-total-extra">€ 0</td>
-                                <td class="table-value gold" id="dist-total-utile">€ 0</td>
+                                <td class="table-value" id="dist-total-base">1.726.560&nbsp;€</td>
+                                <td class="table-value" id="dist-total-fee">32.923&nbsp;€</td>
+                                <td class="table-value" id="dist-total-extra">32.923&nbsp;€</td>
+                                <td class="table-value gold" id="dist-total-utile">1.792.406&nbsp;€</td>
                                 <td class="table-value">—</td>
                             </tr>
                         </tbody>
@@ -900,27 +899,27 @@
                         <tbody>
                             <tr>
                                 <td class="table-label">Investitori B</td>
-                                <td class="table-value computed" id="rend-inv-cap">€ 0</td>
-                                <td class="table-value computed" id="rend-inv-utile">€ 0</td>
-                                <td class="table-value computed gold" id="rend-inv-roi">0.00%</td>
-                                <td class="table-value computed" id="rend-inv-mult">0.00x</td>
-                                <td class="table-value computed gold" id="rend-inv-cagr">0.00%</td>
+                                <td class="table-value computed" id="rend-inv-cap">2.199.037&nbsp;€</td>
+                                <td class="table-value computed" id="rend-inv-utile">703.793&nbsp;€</td>
+                                <td class="table-value computed gold" id="rend-inv-roi">32.00%</td>
+                                <td class="table-value computed" id="rend-inv-mult">1.32x</td>
+                                <td class="table-value computed gold" id="rend-inv-cagr">14.89%</td>
                             </tr>
                             <tr>
-                                <td class="table-label">C&P A</td>
-                                <td class="table-value computed" id="rend-cp-cap">€ 0</td>
-                                <td class="table-value computed" id="rend-cp-utile">€ 0</td>
-                                <td class="table-value computed gold" id="rend-cp-roi">0.00%</td>
-                                <td class="table-value computed" id="rend-cp-mult">0.00x</td>
-                                <td class="table-value computed gold" id="rend-cp-cagr">0.00%</td>
+                                <td class="table-label">C&amp;P A</td>
+                                <td class="table-value computed" id="rend-cp-cap">50.007&nbsp;€</td>
+                                <td class="table-value computed" id="rend-cp-utile">175.948&nbsp;€</td>
+                                <td class="table-value computed gold" id="rend-cp-roi">351.85%</td>
+                                <td class="table-value computed" id="rend-cp-mult">4.52x</td>
+                                <td class="table-value computed gold" id="rend-cp-cagr">112.57%</td>
                             </tr>
                             <tr>
                                 <td class="table-label">Sviluppatore A</td>
-                                <td class="table-value computed" id="rend-svil-cap">€ 0</td>
-                                <td class="table-value computed" id="rend-svil-utile">€ 0</td>
-                                <td class="table-value computed gold" id="rend-svil-roi">0.00%</td>
-                                <td class="table-value computed" id="rend-svil-mult">0.00x</td>
-                                <td class="table-value computed gold" id="rend-svil-cagr">0.00%</td>
+                                <td class="table-value computed" id="rend-svil-cap">250.033&nbsp;€</td>
+                                <td class="table-value computed" id="rend-svil-utile">912.665&nbsp;€</td>
+                                <td class="table-value computed gold" id="rend-svil-roi">365.02%</td>
+                                <td class="table-value computed" id="rend-svil-mult">4.65x</td>
+                                <td class="table-value computed gold" id="rend-svil-cagr">115.64%</td>
                             </tr>
                         </tbody>
                     </table>
@@ -948,15 +947,114 @@
                                 <th style="text-align: right;">CAGR Quote A %</th>
                             </tr>
                         </thead>
-                        <tbody id="scenario-tbody">
-                        </tbody>
+                        <tbody id="scenario-tbody"><tr>
+                    <td class="table-value computed">-20.00%</td>
+                    <td class="table-value computed">8.080.000&nbsp;€</td>
+                    <td class="table-value computed">466.000&nbsp;€</td>
+                    <td class="table-value computed">335.986&nbsp;€</td>
+                    <td class="table-value computed">4.67%</td>
+                    <td class="table-value computed">31.41%</td>
+                    <td class="table-value computed">14.63%</td>
+                    <td class="table-value computed">345.27%</td>
+                    <td class="table-value computed">111.01%</td>
+                </tr><tr>
+                    <td class="table-value computed">-15.00%</td>
+                    <td class="table-value computed">8.585.000&nbsp;€</td>
+                    <td class="table-value computed">971.000&nbsp;€</td>
+                    <td class="table-value computed">700.091&nbsp;€</td>
+                    <td class="table-value computed">9.73%</td>
+                    <td class="table-value computed">31.41%</td>
+                    <td class="table-value computed">14.63%</td>
+                    <td class="table-value computed">345.27%</td>
+                    <td class="table-value computed">111.01%</td>
+                </tr><tr>
+                    <td class="table-value computed">-10.00%</td>
+                    <td class="table-value computed">9.090.000&nbsp;€</td>
+                    <td class="table-value computed">1.476.000&nbsp;€</td>
+                    <td class="table-value computed">1.064.196&nbsp;€</td>
+                    <td class="table-value computed">14.79%</td>
+                    <td class="table-value computed">31.41%</td>
+                    <td class="table-value computed">14.63%</td>
+                    <td class="table-value computed">345.27%</td>
+                    <td class="table-value computed">111.01%</td>
+                </tr><tr>
+                    <td class="table-value computed">-5.00%</td>
+                    <td class="table-value computed">9.595.000&nbsp;€</td>
+                    <td class="table-value computed">1.981.000&nbsp;€</td>
+                    <td class="table-value computed">1.428.301&nbsp;€</td>
+                    <td class="table-value computed">19.85%</td>
+                    <td class="table-value computed">31.41%</td>
+                    <td class="table-value computed">14.63%</td>
+                    <td class="table-value computed">345.27%</td>
+                    <td class="table-value computed">111.01%</td>
+                </tr><tr class="scenario-base">
+                    <td class="table-value computed">0.00%</td>
+                    <td class="table-value computed">10.100.000&nbsp;€</td>
+                    <td class="table-value computed">2.486.000&nbsp;€</td>
+                    <td class="table-value computed">1.792.406&nbsp;€</td>
+                    <td class="table-value computed">24.92%</td>
+                    <td class="table-value computed">32.00%</td>
+                    <td class="table-value computed">14.89%</td>
+                    <td class="table-value computed">362.82%</td>
+                    <td class="table-value computed">115.13%</td>
+                </tr><tr>
+                    <td class="table-value computed">5.00%</td>
+                    <td class="table-value computed">10.605.000&nbsp;€</td>
+                    <td class="table-value computed">2.991.000&nbsp;€</td>
+                    <td class="table-value computed">2.156.511&nbsp;€</td>
+                    <td class="table-value computed">29.98%</td>
+                    <td class="table-value computed">35.32%</td>
+                    <td class="table-value computed">16.33%</td>
+                    <td class="table-value computed">459.91%</td>
+                    <td class="table-value computed">136.62%</td>
+                </tr><tr>
+                    <td class="table-value computed">10.00%</td>
+                    <td class="table-value computed">11.110.000&nbsp;€</td>
+                    <td class="table-value computed">3.496.000&nbsp;€</td>
+                    <td class="table-value computed">2.520.616&nbsp;€</td>
+                    <td class="table-value computed">35.04%</td>
+                    <td class="table-value computed">38.63%</td>
+                    <td class="table-value computed">17.74%</td>
+                    <td class="table-value computed">556.99%</td>
+                    <td class="table-value computed">156.32%</td>
+                </tr><tr>
+                    <td class="table-value computed">15.00%</td>
+                    <td class="table-value computed">11.615.000&nbsp;€</td>
+                    <td class="table-value computed">4.001.000&nbsp;€</td>
+                    <td class="table-value computed">2.884.721&nbsp;€</td>
+                    <td class="table-value computed">40.10%</td>
+                    <td class="table-value computed">41.94%</td>
+                    <td class="table-value computed">19.14%</td>
+                    <td class="table-value computed">654.07%</td>
+                    <td class="table-value computed">174.60%</td>
+                </tr><tr>
+                    <td class="table-value computed">20.00%</td>
+                    <td class="table-value computed">12.120.000&nbsp;€</td>
+                    <td class="table-value computed">4.506.000&nbsp;€</td>
+                    <td class="table-value computed">3.248.826&nbsp;€</td>
+                    <td class="table-value computed">45.16%</td>
+                    <td class="table-value computed">45.25%</td>
+                    <td class="table-value computed">20.52%</td>
+                    <td class="table-value computed">751.15%</td>
+                    <td class="table-value computed">191.75%</td>
+                </tr><tr>
+                    <td class="table-value computed">25.00%</td>
+                    <td class="table-value computed">12.625.000&nbsp;€</td>
+                    <td class="table-value computed">5.011.000&nbsp;€</td>
+                    <td class="table-value computed">3.612.931&nbsp;€</td>
+                    <td class="table-value computed">50.22%</td>
+                    <td class="table-value computed">48.56%</td>
+                    <td class="table-value computed">21.89%</td>
+                    <td class="table-value computed">848.23%</td>
+                    <td class="table-value computed">207.93%</td>
+                </tr></tbody>
                     </table>
                 </div>
 
                 <div style="margin-top: 30px;">
                     <div class="chart-title">ROI per Scenario</div>
                     <div class="chart-container">
-                        <canvas id="chart-scenari"></canvas>
+                        <canvas id="chart-scenari" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas>
                     </div>
                 </div>
             </div>
@@ -1013,7 +1111,7 @@
 
                 <div class="value-row" style="border-top: 2px solid var(--gold); padding-top: 15px; margin-top: 15px;">
                     <span class="value-label" style="font-weight: 700;">Totale Ricavi</span>
-                    <span class="value-number gold" id="calc-ricavi-pe" style="font-weight: 700;">€ 0</span>
+                    <span class="value-number gold" id="calc-ricavi-pe" style="font-weight: 700;">10.100.000&nbsp;€</span>
                 </div>
             </div>
 
@@ -1049,7 +1147,7 @@
 
                 <div class="value-row" style="border-top: 2px solid var(--gold); padding-top: 15px; margin-top: 15px;">
                     <span class="value-label" style="font-weight: 700;">Totale Costi</span>
-                    <span class="value-number gold" id="calc-costi-pe" style="font-weight: 700;">€ 0</span>
+                    <span class="value-number gold" id="calc-costi-pe" style="font-weight: 700;">7.194.000&nbsp;€</span>
                 </div>
             </div>
 
@@ -1058,7 +1156,7 @@
 
                 <div class="value-row">
                     <span class="value-label">MOL (Margine Operativo Lordo)</span>
-                    <span class="value-number computed gold" id="calc-mol-pe">€ 0</span>
+                    <span class="value-number computed gold" id="calc-mol-pe">2.906.000&nbsp;€</span>
                 </div>
 
                 <div class="input-group" style="margin-top: 20px;">
@@ -1068,15 +1166,15 @@
 
                 <div class="value-row">
                     <span class="value-label">Margine Netto Ante Imposte</span>
-                    <span class="value-number computed gold" id="calc-margine-netto-pe">€ 0</span>
+                    <span class="value-number computed gold" id="calc-margine-netto-pe">2.486.000&nbsp;€</span>
                 </div>
                 <div class="value-row">
                     <span class="value-label">Imposte (@ aliquota)</span>
-                    <span class="value-number computed" id="calc-imposte-pe">€ 0</span>
+                    <span class="value-number computed" id="calc-imposte-pe">693.594&nbsp;€</span>
                 </div>
                 <div class="value-row" style="border-top: 2px solid var(--gold); padding-top: 15px; margin-top: 15px;">
                     <span class="value-label" style="font-weight: 700; font-size: 1.1rem;">Risultato Netto Post Imposte</span>
-                    <span class="value-number gold" id="calc-risultato-netto-pe" style="font-weight: 700; font-size: 1.1rem;">€ 0</span>
+                    <span class="value-number gold" id="calc-risultato-netto-pe" style="font-weight: 700; font-size: 1.1rem;">1.792.406&nbsp;€</span>
                 </div>
             </div>
         </div>
@@ -1090,10 +1188,10 @@
                     <div class="chart-title">Composizione Finanziamento</div>
                     <div class="grid-2">
                         <div class="chart-container">
-                            <canvas id="chart-fonti-pie"></canvas>
+                            <canvas id="chart-fonti-pie" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas>
                         </div>
                         <div class="chart-container">
-                            <canvas id="chart-fonti-bar"></canvas>
+                            <canvas id="chart-fonti-bar" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas>
                         </div>
                     </div>
                 </div>
@@ -1111,22 +1209,22 @@
                         <tbody>
                             <tr>
                                 <td class="table-label">Caparre (da Acquirenti)</td>
-                                <td class="table-value computed gold" id="fonti-caparre">€ 0</td>
-                                <td class="table-value computed" id="fonti-caparre-pct">0.00%</td>
+                                <td class="table-value computed gold" id="fonti-caparre">1.543.428&nbsp;€</td>
+                                <td class="table-value computed" id="fonti-caparre-pct">19.09%</td>
                             </tr>
                             <tr>
                                 <td class="table-label">Finanziamento Bancario</td>
-                                <td class="table-value computed gold" id="fonti-banche">€ 0</td>
-                                <td class="table-value computed" id="fonti-banche-pct">0.00%</td>
+                                <td class="table-value computed gold" id="fonti-banche">4.042.505&nbsp;€</td>
+                                <td class="table-value computed" id="fonti-banche-pct">50.00%</td>
                             </tr>
                             <tr>
                                 <td class="table-label">Equity (Capitale Proprio)</td>
-                                <td class="table-value computed gold" id="fonti-equity">€ 0</td>
-                                <td class="table-value computed" id="fonti-equity-pct">0.00%</td>
+                                <td class="table-value computed gold" id="fonti-equity">2.499.077&nbsp;€</td>
+                                <td class="table-value computed" id="fonti-equity-pct">30.91%</td>
                             </tr>
                             <tr style="font-weight: 700; background-color: rgba(200,146,74,0.15); border-top: 2px solid var(--gold);">
                                 <td class="table-label">TOTALE FABBISOGNO</td>
-                                <td class="table-value computed gold" id="fonti-totale">€ 0</td>
+                                <td class="table-value computed gold" id="fonti-totale">8.085.010&nbsp;€</td>
                                 <td class="table-value computed">100.00%</td>
                             </tr>
                         </tbody>
@@ -1137,15 +1235,15 @@
                 <div class="grid-3">
                     <div class="stat-box">
                         <div class="stat-label">Rapporto Debito / Equity</div>
-                        <div class="stat-value" id="calc-leverage-ratio">0.00x</div>
+                        <div class="stat-value" id="calc-leverage-ratio">1.62x</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Debito / Fabbisogno</div>
-                        <div class="stat-value" id="calc-leverage-fab">0.00%</div>
+                        <div class="stat-value" id="calc-leverage-fab">50.00%</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Equity / Fabbisogno</div>
-                        <div class="stat-value" id="calc-equity-fab">0.00%</div>
+                        <div class="stat-value" id="calc-equity-fab">30.91%</div>
                     </div>
                 </div>
             </div>
@@ -1760,5 +1858,6 @@
             recalc();
         });
     </script>
-</body>
-</html>
+
+
+</body></html>
